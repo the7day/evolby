@@ -1,17 +1,17 @@
 #summary Project Diary
 
-= 22.9.2010 =
+=== 22.9.2010 ===
 Vybudovanie teamu a dostali sme predosle verzie projektu. Nasledujuci tyzden sa snazime ziskat co najviac informacii o tychto projektoch.
 
-= 29.9.2010 =
+=== 29.9.2010 ===
 Rozhodnutie, ze budeme pokracovat v zdokumentovanom projekte.
 Zalozenie wiki, svn a google wave, prvotne rozdelenie uloh do buduceho tyzdna.
 
-= 30.9.2010 =
+=== 30.9.2010 ===
 Upload vybrateho projektu na SVN
 
-= 2.10.2010 =
+=== 2.10.2010 ===
 Vsetci maju vyvojove prostredie nainstalovane
 
-= 3.10.2010 =
+=== 3.10.2010 ===
 1. verzia dokumentov Analyza, navrh a organizovanie prace.
