@@ -14,7 +14,7 @@ Upload vybrateho projektu na SVN
 Vsetci maju vyvojove prostredie nainstalovane.
 
 *3.10.2010*
-1. verzia dokumentov Analyza a organizovanie prace, , analyza kódu
+1. verzia dokumentov Analyza a organizovanie prace, vytvorenie tohto dennika, analyza kódu
 
 *4.10.2010*
 1. verzia dokumentu navrh, analyza kódu
