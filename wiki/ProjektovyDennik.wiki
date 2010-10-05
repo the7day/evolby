@@ -21,3 +21,6 @@ Vsetci maju vyvojove prostredie nainstalovane.
 
 *5.10.2010*
 Dokončená prezentácia o organizácii práce, analyza kódu
+
+*6.10.2010*
+Prve dokumenty odovzdavanie, teamova schodza
