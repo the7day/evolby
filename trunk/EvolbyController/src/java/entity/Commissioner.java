@@ -25,36 +25,61 @@ public class Commissioner implements Serializable {
     private Collection<Election> elections;
     private String firstName;
     private String lastName;
-
+/**
+ * Returns the commissioners first name
+ * @return
+ */
     public String getFirstName() {
         return firstName;
     }
-
+/**
+ * Sets the commissioners first name
+ * @param firstName
+ */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+/**
+ * Returns the commissioners last name
+ * @return
+ */
     public String getLastName() {
         return lastName;
     }
-
+/**
+ * Sets the commissioners last name
+ * @param lastName
+ */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    
+    /**
+     * Returns the login of the commissioner
+     * @return
+     */
     public String getLogin() {
         return login;
     }
 
+/**
+ * Sets the login of the commissioner
+ * @param login
+ */
     public void setLogin(String login) {
         this.login = login;
     }
-
+/**
+ * Returns a collection of elections where the commissioner is commisioning
+ * @return
+ */
     public Collection<Election> getElections() {
         return elections;
     }
-
+/**
+ * Gives the commissioner a collection of elections
+ * @param elections
+ */
     public void setElections(Collection<Election> elections) {
         this.elections = elections;
     }

@@ -32,11 +32,12 @@ public class NominatingSessionBean implements NominatingSessionRemote {
 
 
     /**
-     * Sets the voter with given login to candidate to given event.
+     * Sets the voter with given login to candidate in the given event.
      * @param candidateLogin login of the voter who wants to become a candidate
      * @param electionEventId where the voter want to become a candidate.
-     * @param programme
+     * @param programme the election programme of the candidate
      */
+    //Preco pri volbe nominantov potrebujem ich program???
     public void nominate(final String candidateLogin, final Integer electionEventId, final String programme) throws ControllerException {
         ElectionEvent event = em.find(ElectionEvent.class, electionEventId);
         if(event == null) {
@@ -70,9 +71,9 @@ public class NominatingSessionBean implements NominatingSessionRemote {
     }
 
     /**
-     * 
+     * Returns a collection of nominating event in which the logged user can participate
      * @param login of the voter
-     * @return returns list of election events which are in the nominating state
+     * @return the lis of nominating events
      */
     public List<ElectionEvent> getVoterElectionEvents(String login) throws ControllerException {
         Voter voter = em.find(Voter.class, login);

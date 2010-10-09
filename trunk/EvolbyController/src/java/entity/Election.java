@@ -32,19 +32,31 @@ public class Election implements Serializable {
     private Collection<ElectionEvent> electionEvents;
     //private byte[] publicKey;
     private String type;
-
+/**
+ * Returns the election id
+ * @return
+ */
     public Integer getId() {
         return id;
     }
-
+/**
+ * Sets the election id
+ * @param id
+ */
     public void setId(Integer id) {
         this.id = id;
     }
-
+/**
+ * Returns the name of the election
+ * @return
+ */
     public String getName() {
         return name;
     }
-    
+    /**
+     * Sets the election name
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -57,27 +69,45 @@ public class Election implements Serializable {
         this.publicKey = publicKey;
     }
  */
-
+/**
+ * Returns a collection of election events belonging to these elections
+ * @return
+ */
     public Collection<ElectionEvent> getElectionEvents() {
         return electionEvents;
     }
-
+/**
+ *  Sets a colletion of election events belonging to these elections
+ * @param electionEvents
+ */
     public void setElectionEvents(Collection<ElectionEvent> electionEvents) {
         this.electionEvents = electionEvents;
     }
-
+/**
+ * Returns a set of commissioners belonging to these elections
+ * @return
+ */
     public Collection<Commissioner> getCommissioners() {
         return commissioners;
     }
-
+/**
+ * Sets the collection of commissioners to these elections
+ * @param commissioners
+ */
     public void setCommissioners(Collection<Commissioner> commissioners) {
         this.commissioners = commissioners;
     }
-
+/**
+ * Returns the type of elections
+ * @return
+ */
     public String getType() {
         return type;
     }
-
+/**
+ * Sets the type of the elections
+ * @param type
+ */
     public void setType(String type) {
         this.type = type;
     }
@@ -101,7 +131,10 @@ public class Election implements Serializable {
         }
         return true;
     }
-
+/**
+ * Returns "entity.Election[id=" + name of the elections + "]"
+ * @return
+ */
     @Override
     public String toString() {
         return "entity.Election[id=" + name + "]";

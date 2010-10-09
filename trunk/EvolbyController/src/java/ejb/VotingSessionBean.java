@@ -37,7 +37,8 @@ public class VotingSessionBean implements VotingSessionRemote {
     private EntityManager em2;
 
     /**
-     * Method for the voteApplet
+     * Method for the voteApplet, creates and array of CandidateDTO for a given election event
+     * which is then possible to communicate to the client
      * @param eventId Id of the given election event
      * @return filled field of CandidateDTO of the given election event for voteApplet
      */
@@ -63,7 +64,12 @@ public class VotingSessionBean implements VotingSessionRemote {
         }
         return candidatesDTO;
     }
-
+/**
+ * Fetches the person with the appropriate login
+ * @param login Persons login
+ * @return person
+ * @throws ControllerException
+ */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
     private Person getPerson(String login) throws ControllerException {
         Person person = em2.find(Person.class, login);
@@ -87,7 +93,7 @@ public class VotingSessionBean implements VotingSessionRemote {
     }
 
     /**
-     *
+     * Creates a list of open election events for the given voter
      * @param login of the voter
      * @return list of election events which are in the voting state
      */

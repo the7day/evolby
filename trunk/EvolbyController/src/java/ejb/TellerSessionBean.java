@@ -36,13 +36,22 @@ public class TellerSessionBean implements TellerSessionRemote {
      *
      * @author Finkky
      */
+    /**
+     * Returns the Password of the currently logged user
+     * @return
+     */
     private String getPasswordLoggedUser() {
         String name = ctx.getCallerPrincipal().getName();
         Person loggedPerson = em.find(Person.class, name);
         String passwordHash = loggedPerson.getPassword();
         return passwordHash;
     }
+    // @todo active generation of salt
     private static final String salt = "c5300d2776f5143c5c803b4aaec2";
+    /**
+     * Takes the Username and the password of the logged user, encrypts it and returns
+     * @return the encrypted user name and password hash, salted
+     */
     public String getUserHash() {
         String uname = getLoginLoggedUser();
         String passwordhash = getPasswordLoggedUser();
@@ -50,6 +59,12 @@ public class TellerSessionBean implements TellerSessionRemote {
         return encryptSHA(uname + passwordhash, salt);
     }
 
+    /**
+     *  Encrypts data by uing the SHA algorithm
+     * @param data data to be encrypted
+     * @param salt Salt with which the method will salt
+     * @return the encrypted result
+     */
     private static String encryptSHA(String data, final String salt) {
         String enc = "";
         try {

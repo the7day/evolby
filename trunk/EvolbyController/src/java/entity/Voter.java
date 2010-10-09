@@ -22,19 +22,31 @@ public class Voter implements Serializable {
     private String login;
     @ManyToMany
     private Collection<ElectionEvent> electionEvents;
-
+/**
+ * returns the election events this voter is voting in
+ * @return
+ */
     public Collection<ElectionEvent> getElectionEvents() {
         return electionEvents;
     }
-
+/**
+ * Sets the election events this voter is voting in
+ * @param electionEvents
+ */
     public void setElectionEvents(Collection<ElectionEvent> electionEvents) {
         this.electionEvents = electionEvents;
     }
-
+/**
+ * returns the voter login
+ * @return
+ */
     public String getLogin() {
         return login;
     }
-
+/**
+ * sets the voter login
+ * @param login
+ */
     public void setLogin(String login) {
         this.login = login;
     }

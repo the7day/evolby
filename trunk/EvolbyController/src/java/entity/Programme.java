@@ -22,19 +22,31 @@ public class Programme implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String text;
-
+/**
+ * returns the id
+ * @return
+ */
     public Integer getId() {
         return id;
     }
-
+/**
+ * sets the id
+ * @param id
+ */
     public void setId(Integer id) {
         this.id = id;
     }
-
+/**
+ * returns the programme text
+ * @return
+ */
     public String getText() {
         return text;
     }
-
+/**
+ * sets the programme text
+ * @param text
+ */
     public void setText(String text) {
         this.text = text;
     }
