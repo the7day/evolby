@@ -37,9 +37,9 @@ public class CreatingElectionSessionBean implements CreatingElectionSessionRemot
     private EntityManager em2;
 
     /**
-     * Creates the new election with the given name and type.
-     * @param electionName
-     * @param electionType
+     * Creates a new election with the given name and type.
+     * @param electionName the name of the created election
+     * @param electionType the election type LOCAL or INTERNET
      * @throws ControllerException //TODO description
      */    
     public void createElection(final String electionName, final String electionType ) throws ControllerException {
@@ -59,8 +59,8 @@ public class CreatingElectionSessionBean implements CreatingElectionSessionRemot
     }
 
     /**
-     *
-     * @return all persons in database
+     *Returns all the persons in the database
+     * @return all the persons in the database
      */
     public Collection<Person> getAllPerson() {
         Query query = em2.createQuery("SELECT p FROM Person p");
@@ -68,7 +68,7 @@ public class CreatingElectionSessionBean implements CreatingElectionSessionRemot
     }
 
     /**
-     *
+     * Returns a collection of elections where the given comissioner is active
      * @param commissionerLogin login of the given commissioner
      * @return elections where is the given commissioner
      * @throws ControllerException if commissioner not found
@@ -84,7 +84,7 @@ public class CreatingElectionSessionBean implements CreatingElectionSessionRemot
     }
 
     /**
-     *
+     * Returns unfinished election events
      * @param electionId Id of the given election
      * @return election events of the given election
      * @throws ControllerException if election not found
@@ -136,7 +136,7 @@ public class CreatingElectionSessionBean implements CreatingElectionSessionRemot
     }
      
     /**
-     * Adds the given commissioner to the given election.
+     * Assigns a commisioner from the persons database to commission an election
      * @param commissioner the given Commissioner
      * @param electionId Id of the given election
      * @throws ControllerException if election not found
@@ -171,7 +171,7 @@ public class CreatingElectionSessionBean implements CreatingElectionSessionRemot
     }
 
     /**
-     *
+     *  Returns a collection of commissioners for the inputted election
      * @param electionId Id of the given election
      * @return commissioners of the given election
      * @throws ControllerException if election not found.
@@ -182,12 +182,12 @@ public class CreatingElectionSessionBean implements CreatingElectionSessionRemot
             throw new ControllerException("Election not found.");
         }
         Collection<Commissioner> commisioners = election.getCommissioners();
-        commisioners.size(); // hack on LAZY relationship
+        commisioners.size(); // hack on LAZY relationship ??? co to znamena?
         return election.getCommissioners();
     }
 
     /**
-     *
+     * Returns an election event relevant to the ID
      * @param eventId
      * @return election event of the given Id
      * @throws ControllerException if election event not found
@@ -209,8 +209,8 @@ public class CreatingElectionSessionBean implements CreatingElectionSessionRemot
     }
 
     /**
-     * Creates the new election event with the given election, name nad info.
-     * @param electionId election where will the new election event stand
+     * Creates the new election event within the given election, name nad info.
+     * @param electionId election where the new election event will  event stand
      * @param name name of the new election event
      * @param info info ot the new election event
      * @throws ControllerException if election not found and .. //TODO description
@@ -221,6 +221,7 @@ public class CreatingElectionSessionBean implements CreatingElectionSessionRemot
             throw new ControllerException("Election not found.");
         }
         ElectionEvent electionEvent = new ElectionEvent();
+        //Preco toto nie je v konstruktore?
         electionEvent.setName(name);
         electionEvent.setInfo(info);
         electionEvent.setNominatingStarted(Boolean.FALSE);
@@ -275,7 +276,7 @@ public class CreatingElectionSessionBean implements CreatingElectionSessionRemot
     }
 
     /**
-     * 
+     * Returns an election with the given ID
      * @param electionId
      * @return election of the given election Id
      * @throws ControllerException if election not found.
