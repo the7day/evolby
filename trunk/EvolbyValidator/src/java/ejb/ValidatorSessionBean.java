@@ -42,7 +42,7 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
     private EntityManager em;
 
     /**
-     * Creates the new given election event.
+     * Creates a new given election event.
      * @param eventId id of the given election event
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -54,7 +54,8 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
     }
 
     /**
-     * Adds the new given candidate to the given election event.
+     * Assigns a new given candidate from the persons database to commission
+     * of election event.
      * @param candidateLogin login of the given candidate
      * @param eventId id of the given election event
      * @throws ValidatorException if the given election event not found
@@ -79,7 +80,7 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
     }
 
     /**
-     * Adds the new given voter to the given election event.
+     * Assigns a new given voter to the given election event.
      * @param voterLogin login of the given voter
      * @param eventId id of the given election event
      * @throws ValidatorException if the given election event not found
@@ -104,7 +105,7 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
     }
 
     /**
-     * Start voting in the local given election event.
+     * Starts voting in the local given election event.
      * @param eventId id of the given election event
      * @throws ValidatorException if election event not found
      */
@@ -163,8 +164,9 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
         em.merge(vote);
 
 
+        // Co to má být? Anonymní volič by snad existovat neměl... tuhle část nechápu,
+        // zvláště, jak pak pozná, které hlasy jsou jeho, aby je smazal.
         /* ANONYMOUS VOTER */
-        /*  */
         ValidatorAnonymousVoter anonym = em.find(ValidatorAnonymousVoter.class, votingCard.getToken());
         if (anonym == null) {
             anonym = new ValidatorAnonymousVoter();
@@ -237,12 +239,24 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
         }
     }
 
+    /**
+     * Creates message for ValidatedVotes.
+     * @param session Choosen session.
+     * @param messageData Content of message.
+     * @return ObjectMessage.
+     * @throws JMSException
+     */
     private Message createJMSMessageForjmsValidatedVotes(Session session, Serializable messageData) throws JMSException {
         ObjectMessage om = session.createObjectMessage();
         om.setObject(messageData);
         return om;
     }
 
+    /**
+     * Sends created message to ValidatedVotes.
+     * @param messageData Content of message.
+     * @throws JMSException
+     */
     private void sendJMSMessageToValidatedVotes(Serializable messageData) throws JMSException {
         Connection connection = null;
         Session session = null;
