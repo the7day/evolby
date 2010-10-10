@@ -48,11 +48,17 @@ public class NominatingJSFManagedBean {
             Logger.getLogger(CreateElectionJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+/**
+ *
+ * @return
+ */
     public String goNominate() {
         return "goNominate";
     }
-
+/**
+ * Nominates a candidate
+ * @return
+ */
     public String nominate() {
         setEventId(eventId);
         String login = tellerSessionBean.getLoginLoggedUser();
@@ -64,17 +70,26 @@ public class NominatingJSFManagedBean {
         }
         return "goMain";
     }
-
+/**
+ * Enables nominating in the given election event
+ * @return
+ */
     public String startNominating() {
         nominatingSessionBean.startNominating(getEventId());
         return "goMain";
     }
-
+/**
+ * Disables nominanit in the election event
+ * @return
+ */
     public String endNominating() {
         nominatingSessionBean.endNominating(getEventId());
         return "goMain";
     }
-
+/**
+ * Returns a list of election events that the voter votes in
+ * @return
+ */
     public List<SelectItem> getSelectItems() {
         try {
             String login = tellerSessionBean.getLoginLoggedUser();
@@ -89,7 +104,10 @@ public class NominatingJSFManagedBean {
             return null;
         }
     }
-
+/**
+ * Returns a collection of candidates campaigning in this election
+ * @return
+ */
     public Collection<Candidate> getCandidates() {
         return nominatingSessionBean.getCandidates(getEventId());
     }

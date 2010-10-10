@@ -42,7 +42,9 @@ public class VotingJSFManagedBean {
             Logger.getLogger(CreateElectionJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+/**
+ *
+ */
     @PostConstruct
     public void validate() {
         //TODO kontrola jestli komisarovi patri electionID a eventId
@@ -52,7 +54,10 @@ public class VotingJSFManagedBean {
         setEventId(eventId);
         return "goVote";
     }
-
+/**
+ * Enables voting in the event
+ * @return
+ */
     public String startVoting() {
         try {
             votingSessionBean.startVoting(getEventId());
@@ -62,7 +67,10 @@ public class VotingJSFManagedBean {
         }
         return "goMain";
     }
-
+/**
+ * Disables voting in the event
+ * @return
+ */
     public String endVoting() {
         try {
             votingSessionBean.endVoting(getEventId());
@@ -72,7 +80,10 @@ public class VotingJSFManagedBean {
         }
         return "goMain";
     }
-
+/**
+ * Returns a list of election events the logged user votes in
+ * @return
+ */
     public List<SelectItem> getSelectItems() {
         try {
             String login = tellerSessionBean.getLoginLoggedUser();

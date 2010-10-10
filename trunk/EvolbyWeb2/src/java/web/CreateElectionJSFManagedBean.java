@@ -55,7 +55,10 @@ public class CreateElectionJSFManagedBean {
         }
         return "success";
     }
-
+/**
+ * Adds a commissioner  to the Election
+ * @return
+ */
     public String addCommissioner(){
         Collection<Person> personList = getPersonList();
         Person personOut = null;
@@ -76,7 +79,10 @@ public class CreateElectionJSFManagedBean {
         }
         return "success";
     }
-
+/**
+ * Returns the election commissioners
+ * @return
+ */
     public Collection<Commissioner> getElectionCommissioners() {
         try {
             return creatingElectionSessionBean.getElectionCommissioners(electionId);
@@ -85,7 +91,10 @@ public class CreateElectionJSFManagedBean {
             return null;
         }
     }
-
+/**
+ * Returns a list of persons in the database
+ * @return
+ */
     public List<SelectItem> getPersonSel() {
         Collection<Person> col = getPersonList();
         personSel = new ArrayList<SelectItem>();

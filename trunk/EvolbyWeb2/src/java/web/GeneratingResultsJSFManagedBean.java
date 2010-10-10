@@ -42,7 +42,10 @@ public class GeneratingResultsJSFManagedBean {
             Logger.getLogger(CreateElectionJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+/**
+ * Returns a collection of finished election events
+ * @return
+ */
     public Collection<ElectionEvent> getEndedEvents() {
         String login = tellerSessionBean.getLoginLoggedUser();
         try {
@@ -52,7 +55,10 @@ public class GeneratingResultsJSFManagedBean {
             return null;
         }
     }
-
+/**
+ * Returns the election event results as a collection
+ * @return
+ */
     public Collection<ElectionResult> getElectionEventResults() {
         try {
             Collection<ElectionResult> results = generatingResultsBean.getElectionEventResults(getEventId());
@@ -66,7 +72,10 @@ public class GeneratingResultsJSFManagedBean {
             return null;
         }
     }
-
+/**
+ * Returns the election event ID
+ * @return
+ */
     public Integer getEventId() {
         if(eventId != null)  {
             return eventId;
@@ -75,7 +84,10 @@ public class GeneratingResultsJSFManagedBean {
         HttpSession session = (HttpSession) context.getSession(true);
         return (Integer) session.getAttribute("eventId");
     }
-
+/**
+ * Sets the event ID
+ * @param eventId
+ */
     public void setEventId(Integer eventId) {
         if(eventId == null) return;
         this.eventId = eventId;

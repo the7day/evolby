@@ -50,7 +50,9 @@ public class CreateElectionEventJSFManagedBean {
             Logger.getLogger(CreateElectionJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+/**
+ * Sets the basic information about the event - ID, info and the eventName
+ */
     @PostConstruct
     public void fill() {
         Integer id = getEventId();
@@ -66,7 +68,10 @@ public class CreateElectionEventJSFManagedBean {
             Logger.getLogger(CreateElectionEventJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+/**
+ * Creates an election event
+ * @return
+ */
     public String createEvent() {
         try {
             electionSessionBean.createElectionEvent(elecId, eventName, info);
@@ -76,12 +81,18 @@ public class CreateElectionEventJSFManagedBean {
         }
         return "goMain";
     }
-
+/**
+ * Views the event
+ * @return
+ */
     public String viewEvent() {
         setEventId(eventId);
         return "goViewEvent";
     }
-
+/**
+ * Changes event details including ID, name and info
+ * @return
+ */
     public String changeEvent() {
         try {
             ElectionEvent electionEvent = electionSessionBean.getElectionEvent(getEventId());
@@ -94,7 +105,10 @@ public class CreateElectionEventJSFManagedBean {
         }
         return "goMain";
     }
-
+/**
+ * Adds a voter if the voter exists does nothing, if not it adds the person into the voter list
+ * @return
+ */
     public String addVoter() {
         Collection<Person> personList = getPersonList();
         Person finalPerson = null;
@@ -115,7 +129,10 @@ public class CreateElectionEventJSFManagedBean {
         }
         return "";
     }
-
+/**
+ * returns a collection of event voters
+ * @return
+ */
     public Collection<Voter> getEventVoters() {
         try {
             return electionSessionBean.getEventVoters(getEventId());
@@ -124,7 +141,10 @@ public class CreateElectionEventJSFManagedBean {
         }
         return null;
     }
-
+/**
+ * returns a list of logins of voters eligible to vote in this event
+ * @return
+ */
     public List<SelectItem> getVoterSel() {
         Collection<Person> col = electionSessionBean.getAllPerson();
         voterSel = new ArrayList<SelectItem>();
@@ -133,7 +153,10 @@ public class CreateElectionEventJSFManagedBean {
         }
         return voterSel;
     }
-
+/**
+ * Returns the election event ID
+ * @return
+ */
     public Integer getEventId() {
         if(eventId != null)  {
             return eventId;
@@ -142,7 +165,10 @@ public class CreateElectionEventJSFManagedBean {
         HttpSession session = (HttpSession) context.getSession(true);
         return (Integer) session.getAttribute("eventId");
     }
-
+/**
+ * Sets the event ID to the specified integer value
+ * @param eventId
+ */
     public void setEventId(Integer eventId) {
         if(eventId == null) {
             return;
@@ -183,7 +209,10 @@ public class CreateElectionEventJSFManagedBean {
         }
         return null;
     }
-
+/**
+ *
+ * @return Returns the commissionaries commissioning this election
+ */
     public Collection<Election> getComElection() {
         String login = tellerSessionBean.getLoginLoggedUser();
         try {
