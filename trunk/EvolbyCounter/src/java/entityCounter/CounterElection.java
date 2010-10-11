@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package entityCounter;
 
 import java.io.Serializable;
@@ -12,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 /**
- *
+ * Class representing an election for counting purposes.
  * @author mz
  */
 @Entity
@@ -24,18 +19,34 @@ public class CounterElection implements Serializable {
     @OneToMany(mappedBy="election")
     private Collection<CounterElectionEvent> electionEvents;
     
+    /**
+     * Returns election events for this election.
+     * @return Collection of CounterelectionEvents assigned to this election.
+     */
     public Collection<CounterElectionEvent> getElectionEvents() {
         return electionEvents;
     }
 
+    /**
+     * Sets election events for this election.
+     * @param electionEvents collection of CounterElectionEvents to be assigned to this election.
+     */
     public void setElectionEvents(Collection<CounterElectionEvent> electionEvents) {
         this.electionEvents = electionEvents;
     }
 
+    /**
+     * Returns id of the election.
+     * @return Integer representing id of election.
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Sets id of the election.
+     * @param id integer representing id of election.
+     */
     public void setId(Integer id) {
         this.id = id;
     }

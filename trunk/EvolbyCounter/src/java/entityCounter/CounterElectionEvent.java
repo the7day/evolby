@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
- *
+ * Class representing an election event for counting purposes.
  * @author mz
  */
 @Entity
@@ -29,34 +29,66 @@ public class CounterElectionEvent implements Serializable {
     @OneToMany(mappedBy="electionEvent")
     private Collection<VotesCount> votesCounts;
 
+    /**
+     * Returns candidates in election event.
+     * @return Collection of CounterCandidates in this election event.
+     */
     public Collection<CounterCandidate> getCandidates() {
         return candidates;
     }
 
+    /**
+     * Sets candidates in the election event.
+     * @param candidates collection of CounterCandidates in this election event.
+     */
     public void setCandidates(Collection<CounterCandidate> candidates) {
         this.candidates = candidates;
     }
 
+    /**
+     * Returns election event id.
+     * @return Integer representing id of this election event.
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Sets election event id.
+     * @param id integer representing id of this election
+     */
     public void setId(Integer id) {
         this.id = id;
     }
     
+    /**
+     * Returns the election for this election event.
+     * @return CounterElection assigned to this election event.
+     */
     public CounterElection getElection() {
         return election;
     }
 
+    /**
+     * Sets election for this election event.
+     * @param election CounterElection to be assigned to this election event.
+     */
     public void setElection(CounterElection election) {
         this.election = election;
     }
 
+    /**
+     * Return votes counts for this election event.
+     * @return Collection of VotesCount for this election event.
+     */
     public Collection<VotesCount> getVotesCounts() {
         return votesCounts;
     }
 
+    /**
+     * Sets votes counts for this election event.
+     * @param votesCounts collection of VotesCount to be assigned to this election event.
+     */
     public void setVotesCounts(Collection<VotesCount> votesCounts) {
         this.votesCounts = votesCounts;
     }

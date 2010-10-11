@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package entityCounter;
 
 import java.io.Serializable;
@@ -13,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
- *
+ * Class representing the count of votes for one candidate in one election event.
  * @author defiler
  */
 @Entity
@@ -28,34 +23,66 @@ public class VotesCount implements Serializable {
     private CounterCandidate candidate;
     private Integer count;
 
+    /**
+     * Returns the id of this vote count.
+     * @return Integer representing id.
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Sets the id of this vote count.
+     * @param id integer with and id.
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * Returns the number of votes.
+     * @return Integer representing the number of votes.
+     */
     public Integer getCount() {
         return count;
     }
 
+    /**
+     * Sets the number of votes.
+     * @param count integer representing the number of votes.
+     */
     public void setCount(Integer count) {
         this.count = count;
     }
 
+    /**
+     * Returns the election event this vote count is assigned to.
+     * @return CounterElectionEvent assigned to this vote count.
+     */
     public CounterElectionEvent getElectionEvent() {
         return electionEvent;
     }
 
+    /**
+     * Sets an election event this vote count is assigned to.
+     * @param electionEvent electionEvent to be assigned to this vote count.
+     */
     public void setElectionEvent(CounterElectionEvent electionEvent) {
         this.electionEvent = electionEvent;
     }
 
+    /**
+     * Returns the candidate this vote count is assigned to.
+     * @return CounterCandidate assigned to this vote count.
+     */
     public CounterCandidate getCandidate() {
         return candidate;
     }
 
+    /**
+     * Sets the candidate this vote count is assigned to.
+     * @param candidate CounterCandidate assigned to this vote count.
+     */
     public void setCandidate(CounterCandidate candidate) {
         this.candidate = candidate;
     }

@@ -8,7 +8,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
- *
+ * Class representing candidates for counting purposes.
  * @author mz
  */
 @Entity
@@ -21,26 +21,51 @@ public class CounterCandidate implements Serializable {
     @OneToMany(mappedBy="candidate")
     private Collection<VotesCount> votesCount;
 
+     /**
+     * Returns candidate's login.
+     * @return string containing candidate's login
+     */
     public String getCandidateLogin() {
         return candidateLogin;
     }
 
+
+    /**
+     * Sets candidate's login.
+     * @param candidateLogin string with candidate's login.
+     */
     public void setCandidateLogin(String candidateLogin) {
         this.candidateLogin = candidateLogin;
     }
 
+    /**
+     * Returns the election events this candidate is participating in.
+     * @return collection of CounterElectionEvents
+     */
     public Collection<CounterElectionEvent> getVotedInEvents() {
         return votedInEvents;
     }
 
+    /**
+     * Sets the events this candidate is participating in.
+     * @param votedInEvents collection of CounterElectionEvents
+     */
     public void setVotedInEvents(Collection<CounterElectionEvent> votedInEvents) {
         this.votedInEvents = votedInEvents;
     }
 
+    /**
+     * Returns vote counts for the candidate.
+     * @return collection of VotesCount
+     */
     public Collection<VotesCount> getVotesCount() {
         return votesCount;
     }
 
+    /**
+     * Sets vote counts for the candidate.
+     * @param votesCount collection of VotesCount
+     */
     public void setVotesCount(Collection<VotesCount> votesCount) {
         this.votesCount = votesCount;
     }
