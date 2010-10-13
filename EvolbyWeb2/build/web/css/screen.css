@@ -1,0 +1,161 @@
+/*
+Screen css file for evolby project
+@author Ondra Mandik <ondramandik@gmail.com>
+*/
+
+body {
+	font-family: Tahoma, Verdana, Arial, sans-serif;
+}
+
+h1 {
+   font-size: 22px;
+  border-bottom: solid 1px #ccc;
+  margin: 0 0 10px 0;
+  padding: 0 0 10px 0;
+}
+
+ul.buttons li a, a.button, input.button {
+  display: block;
+  background-image: url("img/button.png");
+  background-position: left top;
+  background-repeat: no-repeat;
+  width: 160px;
+  padding: 8px 0 8px 10px;
+  text-align:left;
+  font-size:10px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight:bold;
+  margin: 0;
+  border:none;
+  cursor: url;
+}
+
+ul.buttons li a:hover, a.button:hover, input.button_hover {
+  background-image: url("img/button_hover.png");
+  color: #fff;
+}
+
+ul.buttons,
+ul.buttons li {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+ul.buttons {
+  height: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left:8px;
+}
+
+ul.buttons li a {
+  float: left;
+}
+
+p {
+  margin: 0;
+  padding: 0 0 0 10px;
+}
+
+table.form {
+  background-color: #fff;
+}
+
+table.form td,
+table.form th {
+  padding: 10px;
+  background-color: #f0f0f0;
+  
+}
+table.form th {
+  vertical-align: top;
+  text-align:right;
+}
+
+table.form td.button {
+  text-align:right;
+  background-color: #fff;
+  padding: 10px 0 0 0;
+}
+
+
+div.main {
+  width:900px;
+  margin: 0 auto;
+}
+
+div.main div.content {
+  min-height: 400px;
+}
+
+div.main div.head {
+  background-image: url("img/head.png");
+  background-repeat: no-repeat;
+  padding: 17px 0 30px 0;
+}
+
+div.main div.head ul,
+div.main div.head ul li {
+  display:block;
+  list-style:none;
+}
+
+div.main div.head ul {
+  padding: 0 0 0 24px;
+}
+div.main div.head ul li {
+  float: left;
+  font-size: 12px;
+  /*text-transform: uppercase;*/
+  border-right: 1px solid #333;
+  padding-right: 5px;
+  margin-right: 5px;
+  
+}
+div.main div.head ul li a {
+  text-decoration:none;
+  font-weight: bold;
+  color: #333;
+}
+
+div.main div.head ul li a:hover {
+  text-decoration:underline;
+  color: #000;
+}
+
+div.main div.foot {
+  background-image: url("img/foot.png");
+  background-repeat: no-repeat;
+  padding: 30px 14px 30px 0;
+  text-align:right;
+}
+
+div.main div.login {
+  padding-top: 100px;
+}
+
+div.main div.login div {
+  margin: 0 auto 0 auto;
+   background-color: #eee;
+   padding: 10px 10px 10px 10px;
+   width:300px;
+}
+
+div.main div.login h1 {
+   padding: 0 0 10px 0;
+   text-align:left;
+   margin: 0;
+}
+
+div.main table.elections th {
+  background-color: #b5bbd3;
+  color: #fff;
+  padding: 10px;
+}
+
+div.main table.elections td {
+  padding: 5px 30px 5px 10px;
+  background-color: #f3f3f3;
+}
