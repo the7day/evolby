@@ -26,27 +26,44 @@ public class Candidate implements Serializable {
     private Map<ElectionEvent, Programme> programmes;
     @ManyToMany
     private Collection<ElectionEvent> votedInEvents;
-
+/**
+ * returns the candidate login
+ * @return
+ */
     public String getLogin() {
         return login;
     }
-
+/**
+ * sets the candidate login
+ * @param login
+ */
     public void setLogin(String login) {
         this.login = login;
     }
-
+/*
+ * Returns a map of programs to the election events of this candidate
+ */
     public Map<ElectionEvent, Programme> getProgrammes() {
         return programmes;
     }
-
+/**
+ * Sets a map of programmes for this candidate
+ * @param programmes
+ */
     public void setProgrammes(Map<ElectionEvent, Programme> programmes) {
         this.programmes = programmes;
     }
-
+/**
+ * Returns the events this candidate has voted in
+ * @return
+ */
     public Collection<ElectionEvent> getVotedInEvents() {
         return votedInEvents;
     }
-
+/**
+ * sets the events this candidate has voted in
+ * @param votedInEvents
+ */
     public void setVotedInEvents(Collection<ElectionEvent> votedInEvents) {
         this.votedInEvents = votedInEvents;
     }
@@ -70,7 +87,10 @@ public class Candidate implements Serializable {
         }
         return true;
     }
-
+/**
+ * returns the login of the candicate
+ * @return
+ */
     @Override
     public String toString() {
         return login;
