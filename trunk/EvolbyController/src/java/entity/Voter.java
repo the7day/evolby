@@ -10,15 +10,20 @@ import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author defiler
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Voter.findAll", query = "SELECT v FROM Voter v"),
+    @NamedQuery(name = "Voter.findByLogin", query = "SELECT v FROM Voter v WHERE v.login = :login")})
 public class Voter implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id   
+    @Id
     private String login;
     @ManyToMany
     private Collection<ElectionEvent> electionEvents;

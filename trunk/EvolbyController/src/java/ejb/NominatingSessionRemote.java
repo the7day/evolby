@@ -27,5 +27,9 @@ public interface NominatingSessionRemote {
     void endNominating(final Integer eventId);
 
     Collection<Candidate> getCandidates(final Integer eventId);
+
+    public void deleteCandidateFromEvent(entity.Candidate candidate, java.lang.Integer eventId) throws pojos.ControllerException;
+
+    public boolean isStartedNominating(java.lang.Integer eventId);
     
 }

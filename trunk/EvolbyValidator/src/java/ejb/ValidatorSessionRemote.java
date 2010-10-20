@@ -29,4 +29,10 @@ public interface ValidatorSessionRemote {
     void endVoting(final Integer eventId) throws ValidatorException;
 
     void endElectionEvent(final Integer eventId) throws ValidatorException;
+
+    @javax.ejb.TransactionAttribute(value = javax.ejb.TransactionAttributeType.REQUIRES_NEW)
+    public void deleteCandidateFromEvent(java.lang.String login, java.lang.Integer eventId);
+
+    @javax.ejb.TransactionAttribute(value = javax.ejb.TransactionAttributeType.REQUIRES_NEW)
+    public void deleteVoterFromEvent(java.lang.String login, java.lang.Integer eventId);
 }

@@ -4,6 +4,7 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
+    <h:messages />
     <h1>
         <h:outputText value="Nominating"/>
     </h1>

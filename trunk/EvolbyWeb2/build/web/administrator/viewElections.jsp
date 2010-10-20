@@ -3,6 +3,7 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
+    <h:messages />
     <h1>View elections</h1>
     <h:dataTable cellspacing="1" styleClass="elections" value="#{createElection.elections}" var="item">
         <h:column>

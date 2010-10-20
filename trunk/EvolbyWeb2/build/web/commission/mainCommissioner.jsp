@@ -3,6 +3,7 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
+    <h:messages />
     <h1>Main commissioner</h1>
     <p>Welcome commissioner, please choose one of following option.</p>
     <ul class="buttons">

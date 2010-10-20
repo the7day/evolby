@@ -3,6 +3,7 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
+    <h:messages />
     <h1>Add voter</h1>
     <h:form>
         Voter :

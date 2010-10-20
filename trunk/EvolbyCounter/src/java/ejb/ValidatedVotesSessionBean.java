@@ -82,7 +82,7 @@ public class ValidatedVotesSessionBean implements ValidatedVotesSessionLocal
                 }
                 Integer count = votesCount.getCount();
                 votesCount.setCount(count+1);
-                em.persist(votesCount);                
+                em.persist(votesCount);
             }
         }
     }

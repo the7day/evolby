@@ -31,7 +31,7 @@ public class GeneratingResultsJSFManagedBean {
 
     private Integer eventId;
 
-    
+
     public GeneratingResultsJSFManagedBean() {
         Context context;
         try {

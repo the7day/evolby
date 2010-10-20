@@ -6,6 +6,7 @@
 package web;
 
 
+import com.sun.org.apache.xpath.internal.patterns.ContextMatchStepPattern;
 import ejb.CreatingElectionSessionRemote;
 import entity.*;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -49,6 +52,8 @@ public class CreateElectionJSFManagedBean {
     public String create(){
         try {
             creatingElectionSessionBean.createElection(name, currentType);
+            FacesMessage m = new FacesMessage("The election "+name+" was successfully created");
+            FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(CreateElectionJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
@@ -70,6 +75,8 @@ public class CreateElectionJSFManagedBean {
         }
         try {
             creatingElectionSessionBean.addCommissioner(personOut, electionId);
+            FacesMessage m = new FacesMessage("The commissioner "+personOut.getLogin()+" was successfully added");
+            FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(CreateElectionJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";

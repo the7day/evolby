@@ -48,4 +48,6 @@ public interface CreatingElectionSessionRemote {
     Collection<Voter> getEventVoters(final Integer eventId) throws ControllerException;
 
     public Collection<ElectionEvent> getEndedEvents(final String login) throws ControllerException;
+
+    public void deleteVoterFromEvent(entity.Voter voter, java.lang.Integer eventId) throws pojos.ControllerException;
 }

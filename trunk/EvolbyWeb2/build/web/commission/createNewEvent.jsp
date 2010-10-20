@@ -3,6 +3,7 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
+    <h:messages />
     <h1>Create election event</h1>
     <h:form>
       <h:inputHidden value="#{createElectionEvent.elecId}" />
@@ -18,13 +19,15 @@
           </tr>
           <tr>
             <td class="button" colspan="2">
-               <h:commandButton value="Create" action="#{createElectionEvent.createEvent}"/>
+                <h:commandButton value="Create" action="#{createElectionEvent.createEvent}">
+                    <f:param name="elecId" value="#{createElectionEvent.elecId}"/>
+                </h:commandButton>
             </td>
           </tr>
         </tbody>
       </table>
-         
-       
+
+
     </h:form>
     <br/>
     <h:outputLink styleClass="button" value="mainCommissioner.jsf">

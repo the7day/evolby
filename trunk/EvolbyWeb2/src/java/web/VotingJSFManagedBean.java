@@ -2,21 +2,24 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package web;
 
-
-import ejb.GeneratingResultsSessionRemote;
+import ejb.CreatingElectionSessionRemote;
+import ejb.NominatingSessionRemote;
 import ejb.TellerSessionRemote;
 import ejb.VotingSessionRemote;
 import entity.*;
+import entity.Voter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -28,20 +31,27 @@ import pojos.ControllerException;
  *
  * @author defiler
  */
-
 public class VotingJSFManagedBean {
 
+    private ListDataModel AllVoterModel;
     private TellerSessionRemote tellerSessionBean;
     private VotingSessionRemote votingSessionBean;
-   
-    private Integer eventId;
+    private CreatingElectionSessionRemote creatingElectionSessionBean;
+    private NominatingSessionRemote nominatingSessionBean;
 
-    public VotingJSFManagedBean() {
+    private Voter voter = null;
+    private Integer eventId = null;
+
+
+    public VotingJSFManagedBean() throws ControllerException {
         Context context;
         try {
             context = new InitialContext();
             tellerSessionBean = (TellerSessionRemote) context.lookup("ejb.TellerSessionRemote");
             votingSessionBean = (VotingSessionRemote) context.lookup("ejb.VotingSessionRemote");
+            creatingElectionSessionBean = (CreatingElectionSessionRemote) context.lookup("ejb.CreatingElectionSessionRemote");
+            nominatingSessionBean = (NominatingSessionRemote) context.lookup("ejb.NominatingSessionRemote");
+            // getAllVotersModel();
         } catch (NamingException ex) {
             Logger.getLogger(CreateElectionJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,6 +70,8 @@ public class VotingJSFManagedBean {
     public String startVoting() {
         try {
             votingSessionBean.startVoting(getEventId());
+            FacesMessage m = new FacesMessage("Voting started");
+            FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(VotingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
@@ -70,12 +82,30 @@ public class VotingJSFManagedBean {
     public String endVoting() {
         try {
             votingSessionBean.endVoting(getEventId());
+            FacesMessage m = new FacesMessage("Voting ended");
+            FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(VotingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
         return "goMain";
     }
+
+    public String deleteVoter() throws ControllerException {
+        voter = (Voter) AllVoterModel.getRowData();
+        this.eventId = getEventId();
+        try {
+            creatingElectionSessionBean.deleteVoterFromEvent(voter, eventId);
+               FacesMessage m = new FacesMessage("Voter "+voter.getLogin()+" was succssfully removed");
+            FacesContext.getCurrentInstance().addMessage("",m);
+        } catch (ControllerException ex) {
+            Logger.getLogger(VotingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            return "";
+        }
+        return "";
+    }
+
+
 
     public List<SelectItem> getSelectItems() {
         try {
@@ -97,7 +127,7 @@ public class VotingJSFManagedBean {
     }
 
     public Integer getEventId() {
-        if(eventId != null)  {
+        if (eventId != null) {
             return eventId;
         }
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
@@ -106,11 +136,41 @@ public class VotingJSFManagedBean {
     }
 
     public void setEventId(Integer eventId) {
-        if(eventId == null) return;
+        if (eventId == null) {
+            return;
+        }
         this.eventId = eventId;
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) context.getSession(true);
         session.setAttribute("eventId", eventId);
     }
+
+    public DataModel getAllVotersModel() throws ControllerException {
+        AllVoterModel = new ListDataModel(getEventVoters());
+        return AllVoterModel;
+    }
+
+    public Voter getVoter() {
+        return voter;
+    }
+
+    public void setVoter(Voter voter) {
+        this.voter = voter;
+    }
+
+    public List<Voter> getEventVoters() {
+        try {
+            return (List<Voter>) creatingElectionSessionBean.getEventVoters(getEventId());
+        } catch (ControllerException ex) {
+            Logger.getLogger(CreateElectionEventJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public List<Voter> getAllVoters() throws ControllerException {
+
+        return (List<Voter>) votingSessionBean.getAllVoters();
+    }
+
 
 }

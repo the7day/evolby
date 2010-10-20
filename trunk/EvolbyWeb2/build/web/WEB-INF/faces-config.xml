@@ -2,9 +2,9 @@
 
 <!-- =========== FULL CONFIGURATION FILE ================================== -->
 
-<faces-config version="1.2" 
-    xmlns="http://java.sun.com/xml/ns/javaee" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<faces-config version="1.2"
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
     <managed-bean>
         <managed-bean-name>createElection</managed-bean-name>
@@ -65,16 +65,23 @@
         </navigation-case>
     </navigation-rule>
 
-    
+
     <navigation-rule>
         <from-view-id>/commission/*</from-view-id>
         <navigation-case>
             <from-outcome>goMain</from-outcome>
             <to-view-id>/commission/mainCommissioner.jsp</to-view-id>
+            <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>goViewEvent</from-outcome>
             <to-view-id>/commission/viewEvent.jsp</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goViewEvents</from-outcome>
+            <to-view-id>/commission/viewEvents.jsp</to-view-id>
+
         </navigation-case>
     </navigation-rule>
 
@@ -111,7 +118,7 @@
             <to-view-id>/login.jsp</to-view-id>
             <redirect/>
         </navigation-case>
-        
+
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/index.jsp</from-view-id>
@@ -131,7 +138,6 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-   
 </faces-config>
 
 

@@ -4,8 +4,9 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
+    <h:messages />
     <h1>Election events</h1>
-    
+
     <h:dataTable styleClass="elections" cellspacing="1" value="#{createElectionEvent.unfinishedElectionEvents}" var="item">
         <h:column>
             <f:facet name="header">
@@ -57,7 +58,7 @@
         </h:outputLink>
       </li>
     </ul>
-    
+
 </f:view>
 <jsp:include page="../footer.jsp" />
 

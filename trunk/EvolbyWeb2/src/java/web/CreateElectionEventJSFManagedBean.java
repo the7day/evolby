@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -36,7 +37,7 @@ public class CreateElectionEventJSFManagedBean {
     private String voterLogin;
     private String info;
     private Integer elecId;
-    private Integer eventId; 
+    private Integer eventId;
     private String voterName;
     private List<SelectItem> voterSel;
 
@@ -70,11 +71,14 @@ public class CreateElectionEventJSFManagedBean {
     public String createEvent() {
         try {
             electionSessionBean.createElectionEvent(elecId, eventName, info);
+            FacesMessage m = new FacesMessage("Event was succesfully created");
+            FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(CreateElectionEventJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
-        return "goMain";
+        setElecId(elecId);
+        return "goViewEvents";
     }
 
     public String viewEvent() {
@@ -88,11 +92,14 @@ public class CreateElectionEventJSFManagedBean {
             electionEvent.setName(eventName);
             electionEvent.setInfo(info);
             electionSessionBean.changeEvent(electionEvent);
+            FacesMessage m = new FacesMessage("Event was succesfully changed");
+            FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(CreateElectionEventJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
-        return "goMain";
+
+        return "";
     }
 
     public String addVoter() {
@@ -109,6 +116,8 @@ public class CreateElectionEventJSFManagedBean {
         }
         try {
             electionSessionBean.addVoter(voterLogin, getEventId());
+            FacesMessage m = new FacesMessage("Voter "+voterLogin+" was successfully added");
+            FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(CreateElectionEventJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
@@ -153,6 +162,7 @@ public class CreateElectionEventJSFManagedBean {
         session.setAttribute("eventId", eventId);
     }
 
+
     public String getVoterName() {
         return voterName;
     }
@@ -174,7 +184,7 @@ public class CreateElectionEventJSFManagedBean {
         return null;
     }
 
-    public Collection<ElectionEvent> getEndedEvents() {  
+    public Collection<ElectionEvent> getEndedEvents() {
         String login = tellerSessionBean.getLoginLoggedUser();
         try {
             return electionSessionBean.getEndedEvents(login);
@@ -198,13 +208,14 @@ public class CreateElectionEventJSFManagedBean {
         return "goViewResultEvent";
     }
 
+    public void setElecId(Integer elecId){
+        this.elecId = elecId;
+    }
+
     public Integer getElecId() {
         return elecId;
     }
 
-    public void setElecId(Integer elecId) {
-        this.elecId = elecId;
-    }
 
     public String getEventName() {
         return eventName;
