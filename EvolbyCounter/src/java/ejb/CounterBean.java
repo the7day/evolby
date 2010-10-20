@@ -30,7 +30,6 @@ public class CounterBean implements CounterRemote {
 
     @PersistenceContext
     private EntityManager em;
-
     private static final String KEY_PAIR_GEN_ALGORITHM = "DSA"; //also can be "RSA"
     private static final String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
     private static final String SECURE_RANDOM_PROVIDER = "SUN";
@@ -40,27 +39,27 @@ public class CounterBean implements CounterRemote {
      * @param electionEventId election event identifier
      * @return ElectionEventResultDTO with election event results
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public ElectionEventResultDTO getElectionEventResult(final Integer electionEventId) throws CounterException {
-            ElectionEventResultDTO result = new ElectionEventResultDTO();
-            CounterElectionEvent electionEvent = em.find(CounterElectionEvent.class, electionEventId);
-            if(electionEvent == null) {
-                throw new CounterException("Election event not found.");
-            }
-            int arraySize = electionEvent.getVotesCounts().size();
-            System.out.println("Counter VotesCount arraysize: " + arraySize);
-            String[] candidates = new String[arraySize];
-            int[] votes = new int[arraySize];
-            int i = 0;
-            for (VotesCount vc : electionEvent.getVotesCounts()) {
-                candidates[i] = vc.getCandidate().getCandidateLogin();
-                votes[i] = vc.getCount();
-                i++;
-            }
-            result.setElectionEvent(electionEventId);
-            result.setCandidates(candidates);
-            result.setVotes(votes);
-            return result;
+        ElectionEventResultDTO result = new ElectionEventResultDTO();
+        CounterElectionEvent electionEvent = em.find(CounterElectionEvent.class, electionEventId);
+        if (electionEvent == null) {
+            throw new CounterException("Election event not found.");
+        }
+        int arraySize = electionEvent.getVotesCounts().size();
+        System.out.println("Counter VotesCount arraysize: " + arraySize);
+        String[] candidates = new String[arraySize];
+        int[] votes = new int[arraySize];
+        int i = 0;
+        for (VotesCount vc : electionEvent.getVotesCounts()) {
+            candidates[i] = vc.getCandidate().getCandidateLogin();
+            votes[i] = vc.getCount();
+            i++;
+        }
+        result.setElectionEvent(electionEventId);
+        result.setCandidates(candidates);
+        result.setVotes(votes);
+        return result;
     }
 
     /**
@@ -72,9 +71,9 @@ public class CounterBean implements CounterRemote {
      * @throws Exception
      * @return encoded election public key
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public byte[] createNewElection(final Integer electionId)
-    throws CounterException {
+            throws CounterException {
         try {
             //KeyPair pair = generateKeyPair(electionId);
             CounterElection election = new CounterElection();
@@ -82,7 +81,7 @@ public class CounterBean implements CounterRemote {
             //election.setPrivateKey(pair.getPrivate().getEncoded());
             em.persist(election);
             return null; // pair.getPublic().getEncoded();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new CounterException(e.getMessage());
         }
     }
@@ -93,9 +92,9 @@ public class CounterBean implements CounterRemote {
      * @param electionEventId
      * @throws Exception
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void createNewElectionEvent(final Integer electionId, final Integer electionEventId)
-    throws CounterException {
+            throws CounterException {
         try {
             CounterElectionEvent electionEvent = new CounterElectionEvent();
             electionEvent.setId(electionEventId);
@@ -104,7 +103,7 @@ public class CounterBean implements CounterRemote {
             electionEvent.setElection(election);
             em.persist(electionEvent);
             em.persist(election);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new CounterException(e.getMessage());
         }
     }
@@ -114,20 +113,20 @@ public class CounterBean implements CounterRemote {
      * @param candidateLogin login of the new candidate
      * @param electionEventId id of the given election event
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void addCandidate(final String candidateLogin, final Integer electionEventId) throws CounterException {
         CounterElectionEvent electionEvent = em.find(CounterElectionEvent.class, electionEventId);
-        if(electionEvent == null) {
+        if (electionEvent == null) {
             throw new CounterException("Election event not found.");
         }
         CounterCandidate candidate = em.find(CounterCandidate.class, candidateLogin);
-        if(candidate == null) {
+        if (candidate == null) {
             candidate = new CounterCandidate();
             candidate.setCandidateLogin(candidateLogin);
             Collection<CounterElectionEvent> electionEvents = new ArrayList<CounterElectionEvent>();
             candidate.setVotedInEvents(electionEvents);
         }
-        candidate.getVotedInEvents().add(electionEvent);        
+        candidate.getVotedInEvents().add(electionEvent);
         em.persist(candidate);
         electionEvent.getCandidates().add(candidate);
         em.persist(electionEvent);
@@ -160,8 +159,22 @@ public class CounterBean implements CounterRemote {
      * @param electionId id of the given election
      * @todo implement
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void finishElection(Integer electionId) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void deleteCandidateFromEvent(String login, Integer eventId) {
+        CounterElectionEvent event = em.find(CounterElectionEvent.class, eventId);
+        Collection<CounterCandidate> candidates = event.getCandidates();
+        candidates.size();
+        CounterCandidate candidate = em.find(CounterCandidate.class, login);
+        candidates.remove(candidate);
+        Collection<CounterElectionEvent> events = candidate.getVotedInEvents();
+        events.size();
+        events.remove(event);
+        candidates.remove(candidate);
+
     }
 }

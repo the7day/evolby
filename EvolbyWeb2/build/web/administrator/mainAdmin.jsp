@@ -4,6 +4,7 @@
 <jsp:include page="../header.jsp" />
 
 <f:view>
+    <h:messages />
     <h1>Main Administrator</h1>
     <p>Welcome administrator, please choose one of following option.</p>
     <ul class="buttons">

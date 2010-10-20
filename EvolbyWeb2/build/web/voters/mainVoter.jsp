@@ -3,7 +3,7 @@
 <jsp:include page="../header.jsp" />
 <f:view>
 
-    
+    <h:messages />
     <h1>Main voter</h1>
     <p>Welcome voter, please choose one of following option.</p>
     <ul class="buttons">
@@ -29,7 +29,7 @@
         </li>
     </ul>
 
-    
+
 
 
 </f:view>

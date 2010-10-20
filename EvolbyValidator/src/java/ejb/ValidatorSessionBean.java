@@ -1,3 +1,4 @@
+
 package ejb;
 
 import DTO.VoteDTO;
@@ -33,6 +34,7 @@ import pojos.ValidatorException;
  */
 @Stateless
 public class ValidatorSessionBean implements ValidatorSessionRemote {
+
     @Resource(name = "jms/validatedVotes")
     private Queue validatedVotes;
     @Resource(name = "jms/validatedVotesFactory")
@@ -44,7 +46,7 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
      * Creates the new given election event.
      * @param eventId id of the given election event
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void createNewElectionEvent(final Integer eventId) {
         ValidatorElectionEvent electionEvent = new ValidatorElectionEvent();
         electionEvent.setId(eventId);
@@ -58,14 +60,14 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
      * @param eventId id of the given election event
      * @throws ValidatorException if the given election event not found
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void addCandidate(final String candidateLogin, final Integer eventId) throws ValidatorException {
         ValidatorElectionEvent electionEvent = em.find(ValidatorElectionEvent.class, eventId);
-        if(electionEvent == null) {
+        if (electionEvent == null) {
             throw new ValidatorException("Election event not found");
         }
         ValidatorCandidate candidate = em.find(ValidatorCandidate.class, candidateLogin);
-        if(candidate == null) {
+        if (candidate == null) {
             candidate = new ValidatorCandidate();
             candidate.setLogin(candidateLogin);
             Collection<ValidatorElectionEvent> electionEvents = new ArrayList<ValidatorElectionEvent>();
@@ -83,14 +85,14 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
      * @param eventId id of the given election event
      * @throws ValidatorException if the given election event not found
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void addVoter(final String voterLogin, final Integer eventId) throws ValidatorException {
         ValidatorElectionEvent electionEvent = em.find(ValidatorElectionEvent.class, eventId);
-        if(electionEvent == null) {
+        if (electionEvent == null) {
             throw new ValidatorException("Election event not found");
         }
         ValidatorVoter voter = em.find(ValidatorVoter.class, voterLogin);
-        if(voter == null) {
+        if (voter == null) {
             voter = new ValidatorVoter();
             voter.setLogin(voterLogin);
             Collection<ValidatorElectionEvent> electionEvents = new ArrayList<ValidatorElectionEvent>();
@@ -107,10 +109,10 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
      * @param eventId id of the given election event
      * @throws ValidatorException if election event not found
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void startVoting(Integer eventId) throws ValidatorException {
         ValidatorElectionEvent electionEvent = em.find(ValidatorElectionEvent.class, eventId);
-        if(electionEvent == null) {
+        if (electionEvent == null) {
             throw new ValidatorException("Election event not found");
         }
         electionEvent.setVotingStarted(Boolean.TRUE);
@@ -125,21 +127,21 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
      * @throws ValidatorException If election event not started, illegal votingCard or Vote does not belong to given election event.
      * @todo change signature of voting (for instance to session id)
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void sendVote(final VotingCardDTO votingCard) throws ValidatorException {
         ValidatorElectionEvent electionEvent = em.find(ValidatorElectionEvent.class, votingCard.getElectionEvent());
-        if(electionEvent == null) {
+        if (electionEvent == null) {
             throw new ValidatorException("ElectionEvent not found.");
-        }        
-        if(!electionEvent.getVotingStarted()) {
+        }
+        if (!electionEvent.getVotingStarted()) {
             throw new ValidatorException("Election event not started voting.");
         }
         ValidatorVoter voter = em.find(ValidatorVoter.class, votingCard.getToken());
-        if(voter == null) {
+        if (voter == null) {
             throw new ValidatorException("Voter not found.");
         }
         Collection voters = electionEvent.getVoters();
-        if(!voters.contains(voter)) {
+        if (!voters.contains(voter)) {
             throw new ValidatorException("Voter is not in election event.");
         }
         ValidatorVote vote = new ValidatorVote();
@@ -148,12 +150,12 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
         Collection<ValidatorCandidate> eventCandidates = electionEvent.getCandidates();
         Collection<ValidatorCandidate> candidates = new HashSet();
         ValidatorCandidate candidate;
-        for(int i=0; i<votingCard.getCandidates().length; i++) {
+        for (int i = 0; i < votingCard.getCandidates().length; i++) {
             candidate = em.find(ValidatorCandidate.class, votingCard.getCandidates()[i]);
-            if(candidate == null) {
+            if (candidate == null) {
                 throw new ValidatorException("Candidate " + votingCard.getCandidates()[i] + " not found.");
             }
-            if(!eventCandidates.contains(candidate)) {
+            if (!eventCandidates.contains(candidate)) {
                 throw new ValidatorException("Candidate " + votingCard.getCandidates()[i] + " is not in election event.");
             }
             candidates.add(candidate);
@@ -162,8 +164,8 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
         em.persist(vote);
         Collection<ValidatorVote> votes = voter.getVotes();
         /* deleting previous vote if exists */
-        for(ValidatorVote v : votes) {
-            if(v.getElectionEvent().equals(electionEvent)) {
+        for (ValidatorVote v : votes) {
+            if (v.getElectionEvent().equals(electionEvent)) {
                 voter.getVotes().remove(v);
                 electionEvent.getVotes().remove(v);
                 em.remove(v);
@@ -182,10 +184,10 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
      * @param eventId id of the given election event
      * @throws ValidatorException if election event not found
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void endVoting(Integer eventId) throws ValidatorException {
         ValidatorElectionEvent electionEvent = em.find(ValidatorElectionEvent.class, eventId);
-        if(electionEvent == null) {
+        if (electionEvent == null) {
             throw new ValidatorException("Election event not found");
         }
         electionEvent.setVotingStarted(Boolean.FALSE);
@@ -199,7 +201,7 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
      * @param electionEventId
      * @throws ValidatorException if ... //TODO description
      */
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW )
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void endElectionEvent(final Integer electionEventId) throws ValidatorException {
         ValidatorElectionEvent electionEvent = em.find(ValidatorElectionEvent.class, electionEventId);
         VotesDTO votes = new VotesDTO();
@@ -207,10 +209,10 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
         VoteDTO[] voteDTOArray = new VoteDTO[electionEvent.getVotes().size()];
         String[] votedCandidates;
         int i = 0;
-        for(ValidatorVote v : electionEvent.getVotes()) {
+        for (ValidatorVote v : electionEvent.getVotes()) {
             votedCandidates = new String[v.getVotedCandidates().size()];
             int k = 0;
-            for(ValidatorCandidate candidate : v.getVotedCandidates()) {
+            for (ValidatorCandidate candidate : v.getVotedCandidates()) {
                 votedCandidates[k] = candidate.getLogin();
                 k++;
             }
@@ -253,5 +255,33 @@ public class ValidatorSessionBean implements ValidatorSessionRemote {
                 connection.close();
             }
         }
-    } 
+    }
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void deleteVoterFromEvent(String login, Integer eventId) {
+        ValidatorElectionEvent event = em.find(ValidatorElectionEvent.class, eventId);
+        Collection<ValidatorVoter> voters = event.getVoters();
+        voters.size();
+        ValidatorVoter voter = em.find(ValidatorVoter.class, login);
+        voters.remove(voter);
+        Collection<ValidatorElectionEvent> events = voter.getElectionEvents();
+        events.size();
+        events.remove(event);
+        voters.remove(voter);
+
+    }
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void deleteCandidateFromEvent(String login, Integer eventId) {
+        ValidatorElectionEvent event = em.find(ValidatorElectionEvent.class, eventId);
+        Collection<ValidatorCandidate> candidates = event.getCandidates();
+        candidates.size();
+        ValidatorCandidate candidate = em.find(ValidatorCandidate.class, login);
+        candidates.remove(candidate);
+        Collection<ValidatorElectionEvent> events = candidate.getVotedInEvents();
+        events.size();
+
+        candidates.remove(candidate);
+        events.remove(event);
+    }
 }

@@ -20,5 +20,8 @@ public interface CounterRemote {
     void addCandidate(final String candidateLogin, final Integer electionEventId) throws CounterException;
 
     void finishElection(Integer electionId);
+
+    @javax.ejb.TransactionAttribute(value = javax.ejb.TransactionAttributeType.REQUIRES_NEW)
+    public void deleteCandidateFromEvent(java.lang.String login, java.lang.Integer eventId);
     
 }

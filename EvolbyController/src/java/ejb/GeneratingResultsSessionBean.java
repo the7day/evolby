@@ -123,7 +123,7 @@ public class GeneratingResultsSessionBean implements GeneratingResultsSessionRem
     }
 
     /**
-     * 
+     *
      * @param eventId id of the given election event
      * @return ElectionResults of the given election event
      * @throws if election event not found

@@ -1,4 +1,4 @@
-<%-- 
+<%--
   Document   : header
   Created on : 17.11.2009, 11:27:23
   Author     : lordondrak
@@ -24,9 +24,6 @@
     <body>
         <div class="main">
             <div class="head">
-
-              
             </div>
-
             <div class="content">
 

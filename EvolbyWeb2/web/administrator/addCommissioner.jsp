@@ -4,6 +4,7 @@
 <jsp:include page="../header.jsp" />
 
 <f:view>
+    <h:messages />
     <h1>Add commissioner</h1>
     <h:form>
       <h:inputHidden value="#{createElection.electionId}"/>

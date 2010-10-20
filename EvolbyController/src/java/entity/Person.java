@@ -5,6 +5,8 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
@@ -12,6 +14,9 @@ import javax.persistence.Id;
  */
 @DiscriminatorColumn(discriminatorType=DiscriminatorType.STRING, name="persongroup")
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
+    @NamedQuery(name = "Person.findByLogin", query = "SELECT p FROM Person p WHERE p.login = :login")})
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -21,8 +26,8 @@ public class Person implements Serializable {
     private String lastname;
 
     private String personGroup;
-    
-    private String password; 
+
+    private String password;
 
 
     public String getLastname() {

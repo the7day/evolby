@@ -4,6 +4,7 @@
 <jsp:include page="../header.jsp" />
 
 <f:view>
+    <h:messages />
     <h1>View election</h1>
     <h2>Election info</h2>
     <table class="elections">
