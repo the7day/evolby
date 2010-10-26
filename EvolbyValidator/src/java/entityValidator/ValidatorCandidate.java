@@ -23,6 +23,9 @@ public class ValidatorCandidate implements Serializable {
     @ManyToMany
     private Collection<ValidatorElectionEvent> votedInEvents;
 
+     //candidateRole rozlisuje role profesor/student
+    private String candidateRole;
+
     public String getLogin() {
         return login;
     }
@@ -38,6 +41,16 @@ public class ValidatorCandidate implements Serializable {
     public void setVotedInEvents(Collection<ValidatorElectionEvent> votedInEvents) {
         this.votedInEvents = votedInEvents;
     }
+
+    public String getCandidateRole() {
+        return candidateRole;
+    }
+
+    public void setCandidateRole(String candidateRole) {
+        this.candidateRole = candidateRole;
+    }
+
+
 
     @Override
     public int hashCode() {

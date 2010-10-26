@@ -54,7 +54,13 @@
                 <h:outputText value="#{item.login}"/>
             </h:column>
             <h:column>
-                <h:commandLink value="Odstranit" action="#{nominating.deleteCandidate}" />
+                <f:facet name="header">
+                    <h:outputText value="role" />
+                </f:facet>
+                <h:outputText value="#{item.candidateRole}" />
+            </h:column>
+            <h:column>
+                <h:commandLink value="Remove" action="#{nominating.deleteCandidate}" />
             </h:column>
 
         </h:dataTable>
@@ -69,7 +75,7 @@
                 <h:outputText value="#{item.login}"/>
             </h:column>
             <h:column>
-                <h:commandLink value="Odstranit" action="#{voting.deleteVoter}"  >
+                <h:commandLink value="Remove" action="#{voting.deleteVoter}"  >
 
                 </h:commandLink>
             </h:column>
