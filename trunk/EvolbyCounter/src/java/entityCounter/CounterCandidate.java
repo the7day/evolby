@@ -21,6 +21,9 @@ public class CounterCandidate implements Serializable {
     @OneToMany(mappedBy="candidate")
     private Collection<VotesCount> votesCount;
 
+     //candidateRole rozlisuje role profesor/student
+    private String candidateRole;
+
     public String getCandidateLogin() {
         return candidateLogin;
     }
@@ -43,6 +46,14 @@ public class CounterCandidate implements Serializable {
 
     public void setVotesCount(Collection<VotesCount> votesCount) {
         this.votesCount = votesCount;
+    }
+
+    public String getCandidateRole() {
+        return candidateRole;
+    }
+
+    public void setCandidateRole(String candidateRole) {
+        this.candidateRole = candidateRole;
     }
 
 

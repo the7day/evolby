@@ -26,6 +26,8 @@ public class Candidate implements Serializable {
     private Map<ElectionEvent, Programme> programmes;
     @ManyToMany
     private Collection<ElectionEvent> votedInEvents;
+    //candidateRole rozlisuje role profesor/student
+    private String candidateRole;
 /**
  * returns the candidate login
  * @return
@@ -68,6 +70,16 @@ public class Candidate implements Serializable {
         this.votedInEvents = votedInEvents;
     }
 
+    public String getCandidateRole() {
+        return candidateRole;
+    }
+
+    public void setCandidateRole(String candidateRole) {
+        this.candidateRole = candidateRole;
+    }
+
+
+    
     @Override
     public int hashCode() {
         int hash = 0;

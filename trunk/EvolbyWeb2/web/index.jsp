@@ -7,9 +7,9 @@
     <span>Welcome:</span>
     <h:outputText value="#{default.usersName}" />
     <h:form>
-    <h:commandLink value="Continue" action="voters" rendered="#{default.voter}" />
-    <h:commandLink value="Continue" action="commissioners" rendered="#{default.commissioner}" />
-    <h:commandLink value="Continue" action="administrators" rendered="#{default.administrator}" />
+    <h:commandLink value="Continue voter" action="voters" rendered="#{default.voter}" /><br/>
+    <h:commandLink value="Continue commissioner" action="commissioners" rendered="#{default.commissioner}" /><br/>
+    <h:commandLink value="Continue administrator" action="administrators" rendered="#{default.administrator}" /><br/>
     </h:form>
 </f:view>
 
