@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -71,15 +70,19 @@ public class NominatingJSFManagedBean {
     }
 
     public String startNominating() {
-        nominatingSessionBean.startNominating(getEventId());
+        nominatingSessionBean.startNominating(eventId);
         FacesMessage m = new FacesMessage("Nominating started");
         FacesContext.getCurrentInstance().addMessage("", m);
         return "";
     }
 
     public String endNominating() {
-        nominatingSessionBean.endNominating(getEventId());
-        FacesMessage m = new FacesMessage("Nominating ended");
+        nominatingSessionBean.supportEndNominating(getEventId(), FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName());
+        System.out.println("eventid " + eventId);
+        if (nominatingSessionBean.isMajority(eventId)) {
+            nominatingSessionBean.endNominating(eventId);
+        }
+        FacesMessage m = new FacesMessage("You agreed with end of nominating.");
         FacesContext.getCurrentInstance().addMessage("", m);
         return "";
     }
@@ -95,7 +98,8 @@ public class NominatingJSFManagedBean {
 
     public boolean isRenderEndNominating() {
         eventId = getEventId();
-        if ((nominatingSessionBean.isStartedNominating(eventId) == true) && (votingSessionBean.isStartedVoting(eventId) == false)) {
+        String login = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
+        if ((nominatingSessionBean.isStartedNominating(eventId) == true) && (votingSessionBean.isStartedVoting(eventId) == false) && (isAnyoneNominated() == true) && !nominatingSessionBean.isComToEndNominating(eventId, login)) {
             return true;
         } else {
             return false;
@@ -113,6 +117,7 @@ public class NominatingJSFManagedBean {
 
     public boolean isRenderEndVoting() {
         eventId = getEventId();
+
         if ((nominatingSessionBean.isStartedNominating(eventId) == false) && (votingSessionBean.isStartedVoting(eventId) == true) && (isAnyoneNominated() == true)) {
             return true;
         } else {

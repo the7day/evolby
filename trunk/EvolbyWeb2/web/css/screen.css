@@ -159,3 +159,8 @@ div.main table.elections td {
   padding: 5px 30px 5px 10px;
   background-color: #f3f3f3;
 }
+
+span.alertRow{
+    background-color: red;
+
+}

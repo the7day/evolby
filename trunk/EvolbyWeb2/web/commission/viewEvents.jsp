@@ -7,7 +7,7 @@
     <h:messages />
     <h1>Election events</h1>
 
-    <h:dataTable styleClass="elections" cellspacing="1" value="#{createElectionEvent.unfinishedElectionEvents}" var="item">
+    <h:dataTable styleClass="elections" cellspacing="1" value="#{createElectionEvent.unfinishedElectionEventsModel}" var="item">
         <h:column>
             <f:facet name="header">
                 <h:outputText value="Name"/>
@@ -33,6 +33,11 @@
             <h:outputText value="#{item.votingStarted}"/>
         </h:column>
         <h:column>
+
+            <h:outputText value="!!! Check the details !!!" styleClass="alertRow" rendered="#{createElectionEvent.renderAlert}"/>
+
+        </h:column>
+        <h:column>
             <f:facet name="header">
                 <h:outputText value="edit"/>
             </f:facet>
@@ -44,19 +49,19 @@
             </h:form>
         </h:column>
     </h:dataTable>
-                <br/>
+    <br/>
     <ul class="buttons">
-      <li>
-        <h:outputLink  value="createNewEvent.jsf">
-          Create new event
-            <f:param name="elecId" value="#{createElectionEvent.elecId}"/>
-        </h:outputLink>
-      </li>
-      <li>
-        <h:outputLink styleClass="buttons" value="mainCommissioner.jsf">
-            Menu
-        </h:outputLink>
-      </li>
+        <li>
+            <h:outputLink  value="createNewEvent.jsf">
+                Create new event
+                <f:param name="elecId" value="#{createElectionEvent.elecId}"/>
+            </h:outputLink>
+        </li>
+        <li>
+            <h:outputLink styleClass="buttons" value="mainCommissioner.jsf">
+                Menu
+            </h:outputLink>
+        </li>
     </ul>
 
 </f:view>
