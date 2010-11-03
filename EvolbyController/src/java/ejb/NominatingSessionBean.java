@@ -4,11 +4,11 @@
  */
 package ejb;
 
-
 import entity.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -108,7 +108,7 @@ public class NominatingSessionBean implements NominatingSessionRemote {
         ElectionEvent event = em.find(ElectionEvent.class, eventId);
         event.setNominatingStarted(false);
         em.persist(event);
-        nominatingDone = true;
+        this.nominatingDone = true;
     }
 
     /**
@@ -152,14 +152,115 @@ public class NominatingSessionBean implements NominatingSessionRemote {
      *
      * @param eventId id of voting event
      * @return true if nominating already started
-
      */
-    public boolean isStartedNominating(Integer eventId) {
+    public Boolean isStartedNominating(Integer eventId) {
         ElectionEvent ee = em.find(ElectionEvent.class, eventId);
         if (ee.getNominatingStarted()) {
-            return true;
+            return Boolean.TRUE;
         } else {
-            return false;
+            return Boolean.FALSE;
         }
+    }
+
+    /**
+     * adds voter agreement with end of nominating
+     * @param eventId id of event
+     * @param login login of commissioner
+     */
+    public void supportEndNominating(Integer eventId, String login) {
+        ElectionEvent ee = em.find(ElectionEvent.class, eventId);
+        Commissioner com = em.find(Commissioner.class, login);
+
+        ee.getComAgreeEndVoting().add(com);
+        com.getEventsToEndVoting().add(ee);
+        em.persist(ee);
+        em.persist(com);
+    }
+    /**
+     *
+     * @param eventIdid of event
+     * @return Collection of commissioners that agreed with end of
+     * nomination in ElectionEvent with given ID
+     */
+    public Collection<Commissioner> getComToEndNominating(Integer eventId) {
+        System.out.println(eventId);
+        ElectionEvent ee = em.find(ElectionEvent.class, eventId);
+        Collection<Commissioner> ret = ee.getComAgreeEndVoting();
+        ret.size();
+        return ret;
+    }
+    /**
+     *
+     * @param eventId id of event
+     * @param login login of commissioner
+     * @return true if commmissioner agreed with end of nominating
+     */
+    public Boolean isComToEndNominating(Integer eventId, String login) {
+        Collection<Commissioner> comCol = getComToEndNominating(eventId);
+        Commissioner com = em.find(Commissioner.class, login);
+        if (comCol.contains(com)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+    /**
+     *
+     * @param eventId id of event
+     * @param login login of commissioner
+     * @param elecId id of Election
+     * @return true, if there is some important action for commissioner
+     */
+    public Boolean alertCommissioner(Integer eventId, String login, Integer elecId) {
+        ElectionEvent ee = em.find(ElectionEvent.class, eventId);
+        Commissioner com = em.find(Commissioner.class, login);
+        Election e = em.find(Election.class, elecId);
+
+        if (e.getCommissioners().contains(com) && !ee.getComAgreeEndVoting().contains(com) && !ee.getComAgreeEndVoting().isEmpty()) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+
+
+    }
+    /**
+     *
+     * @param eventId ID of ElectionEvent
+     * @return true if there is majority count of commissioners in some issue
+     */
+    public Boolean isMajority(Integer eventId) {
+        ElectionEvent ee = em.find(ElectionEvent.class, eventId);
+        Election e = getElectionFromEvent(eventId);
+        System.out.println("ahoj "+e.getCommissioners().size());
+        System.out.println("ahoj "+ee.getComAgreeEndVoting().size());
+        if (((e.getCommissioners().size()) / 2) < (ee.getComAgreeEndVoting().size())) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+
+        }
+    }
+
+    /**
+     *
+     * @param eventId ID of ElectionEvent
+     * @return determines election from given electionEventId
+     */
+    public Election getElectionFromEvent(Integer eventId) {
+        ElectionEvent ee = em.find(ElectionEvent.class, eventId);
+        Collection<Election> elCol = em.createNamedQuery("Election.findAll").getResultList();
+        if (elCol.size() > 0) {
+            Iterator it = elCol.iterator();
+            Election ret = null;
+            while (it.hasNext()) {
+                ret = (Election) it.next();
+                if (ret.getElectionEvents().contains(ee)) {
+                    return ret;
+                }
+            }
+        }
+        
+        return null;
     }
 }

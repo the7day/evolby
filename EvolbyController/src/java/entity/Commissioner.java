@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToMany;
  */
 @Entity
 public class Commissioner implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id   
     private String login;    
@@ -25,10 +27,21 @@ public class Commissioner implements Serializable {
     private Collection<Election> elections;
     private String firstName;
     private String lastName;
-
+   @ManyToMany
+    private List<ElectionEvent> eventsToEndVoting;
     public String getFirstName() {
         return firstName;
     }
+
+    public List<ElectionEvent> getEventsToEndVoting() {
+        return eventsToEndVoting;
+    }
+
+    public void setEventsToEndVoting(List<ElectionEvent> eventsToEndVoting) {
+        this.eventsToEndVoting = eventsToEndVoting;
+    }
+
+
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

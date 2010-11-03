@@ -29,7 +29,7 @@ public interface VotingSessionRemote {
 
     void endVoting(final Integer eventId) throws ControllerException;
 
-    public boolean isStartedVoting(java.lang.Integer eventId);
+    public Boolean isStartedVoting(java.lang.Integer eventId);
 
     public java.util.List<entity.Voter> getAllVoters();
 }

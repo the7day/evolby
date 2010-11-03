@@ -36,6 +36,19 @@ public class ElectionEvent implements Serializable {
     private Boolean nominatingStarted;
     private Boolean finished;
 
+    @ManyToMany(mappedBy = "eventsToEndVoting")
+    private Collection<Commissioner> comAgreeEndVoting;
+
+    public Collection<Commissioner> getComAgreeEndVoting() {
+        return comAgreeEndVoting;
+    }
+
+    public void setComAgreeEndVoting(Collection<Commissioner> comAgreeEndVoting) {
+        this.comAgreeEndVoting = comAgreeEndVoting;
+    }
+
+    
+
     public Collection<ElectionResult> getElectionResults() {
         return electionResults;
     }
