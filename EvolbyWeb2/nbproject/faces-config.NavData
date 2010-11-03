@@ -57,6 +57,7 @@
         <Node id="voters/votingApplet.jsp" x="1452" y="302" zoom="true"/>
         <Node id="administrator/addCommissioner.jsp" x="656" y="599" zoom="true"/>
         <Node id="commission/*" x="679" y="20" zoom="true"/>
+        <Node id="commission/viewEvents.jsp" x="650" y="150" zoom="true"/>
         <Node id="login.jsp" x="108" y="60" zoom="true"/>
         <Node id="voters/resultEvent.jsp" x="400" y="150" zoom="true"/>
     </Scope>

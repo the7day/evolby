@@ -84,6 +84,19 @@
     <h:outputLink styleClass="button" value="addVoter.jsf">
         Add voter
     </h:outputLink>
+        <h3>Commissioners who agreed to end nominating</h3>
+        <h:form>
+            <h:dataTable styleClass="elections" cellspacing="0" value="#{createElectionEvent.comToEndNominatingModel}" var="item">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="login"/>
+                    </f:facet>
+                    <h:outputText value="#{item.login}" />
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+
     <br />
     <h:outputLink styleClass="button" value="mainCommissioner.jsf">
         Menu

@@ -37,6 +37,10 @@
         <managed-bean-name>nominating</managed-bean-name>
         <managed-bean-class>web.NominatingJSFManagedBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>eventId</property-name>
+            <value>#{param.eventId}</value>
+        </managed-property>
     </managed-bean>
     <managed-bean>
         <managed-bean-name>generatingResults</managed-bean-name>
