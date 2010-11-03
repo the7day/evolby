@@ -143,8 +143,7 @@ public class VotingSessionBean implements VotingSessionRemote {
         generatingResultsSessionBean.finishElectionEvent(eventId);
     }
 
-
-     /**
+    /**
      *
      *
      * @return all voters
@@ -153,18 +152,17 @@ public class VotingSessionBean implements VotingSessionRemote {
         return (List<Voter>) em.createNamedQuery("Voter.findAll").getResultList();
     }
 
-
-     /**
+    /**
      *
      * @param eventId - id of voting event
      * @return true if voting already started
      */
-    public boolean isStartedVoting(Integer eventId) {
+    public Boolean isStartedVoting(Integer eventId) {
         ElectionEvent ee = em.find(ElectionEvent.class, eventId);
         if (ee.getVotingStarted()) {
-            return true;
+            return Boolean.TRUE;
         } else {
-            return false;
+            return Boolean.FALSE;
         }
 
     }

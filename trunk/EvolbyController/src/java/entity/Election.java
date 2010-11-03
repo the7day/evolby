@@ -2,17 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -20,13 +20,16 @@ import javax.persistence.OneToMany;
  * @author defiler
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Election.findAll", query = "SELECT e FROM Election e")})
 public class Election implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
-    @ManyToMany( mappedBy="elections" )
+    @ManyToMany(mappedBy = "elections")
     private Collection<Commissioner> commissioners;
     @OneToMany
     private Collection<ElectionEvent> electionEvents;
@@ -44,19 +47,19 @@ public class Election implements Serializable {
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
-/*
+    /*
     public byte[] getPublicKey() {
-        return publicKey;
+    return publicKey;
     }
 
     public void setPublicKey(byte[] publicKey) {
-        this.publicKey = publicKey;
+    this.publicKey = publicKey;
     }
- */
+     */
 
     public Collection<ElectionEvent> getElectionEvents() {
         return electionEvents;
@@ -82,7 +85,6 @@ public class Election implements Serializable {
         this.type = type;
     }
 
-    
     @Override
     public int hashCode() {
         int hash = 0;
