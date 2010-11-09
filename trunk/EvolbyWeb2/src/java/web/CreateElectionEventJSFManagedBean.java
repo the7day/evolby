@@ -7,13 +7,13 @@ package web;
 import ejb.CreatingElectionSessionRemote;
 import ejb.NominatingSessionRemote;
 import ejb.TellerSessionRemote;
+import ejb.VotingSessionRemote;
 import entity.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -34,6 +34,7 @@ public class CreateElectionEventJSFManagedBean {
 
     private CreatingElectionSessionRemote electionSessionBean;
     private TellerSessionRemote tellerSessionBean;
+    private DataModel candidatesModel;
     private NominatingSessionRemote nominatingSessionBean;
     private String eventName;
     private String voterLogin;
@@ -44,7 +45,9 @@ public class CreateElectionEventJSFManagedBean {
     private ElectionEvent electionEvent;
     private List<SelectItem> voterSel;
     private DataModel unfinishedElectionEvents;
-    private DataModel comToEndNominatingModel;
+    private Candidate candidate;
+    private VotingSessionRemote votingSessionBean;
+    private String commissionersAgreeTableHeader;
 
     public CreateElectionEventJSFManagedBean() {
         Context context;
@@ -53,18 +56,18 @@ public class CreateElectionEventJSFManagedBean {
             electionSessionBean = (CreatingElectionSessionRemote) context.lookup("ejb.CreatingElectionSessionRemote");
             nominatingSessionBean = (NominatingSessionRemote) context.lookup("ejb.NominatingSessionRemote");
             tellerSessionBean = (TellerSessionRemote) context.lookup("ejb.TellerSessionRemote");
+            votingSessionBean = (VotingSessionRemote) context.lookup("ejb.VotingSessionRemote");
+            fill();
         } catch (NamingException ex) {
             Logger.getLogger(CreateElectionJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    @PostConstruct
     public void fill() {
         Integer id = getEventId();
         if (id == null) {
             return;
         }
-        ElectionEvent electionEvent;
         try {
             electionEvent = electionSessionBean.getElectionEvent(id);
             this.eventName = electionEvent.getName();
@@ -194,16 +197,6 @@ public class CreateElectionEventJSFManagedBean {
         return unfinishedElectionEvents;
     }
 
-    public DataModel getComToEndNominatingModel() {
-        comToEndNominatingModel = new ListDataModel((List) getComToEndNominating());
-        return comToEndNominatingModel;
-    }
-
-    public Collection<Commissioner> getComToEndNominating() {
-        //ElectionEvent ev = (ElectionEvent) unfinishedElectionEvents.getRowData();
-        return nominatingSessionBean.getComToEndNominating(getEventId());
-    }
-
     public Collection<ElectionEvent> getEndedEvents() {
         String login = tellerSessionBean.getLoginLoggedUser();
         try {
@@ -227,11 +220,137 @@ public class CreateElectionEventJSFManagedBean {
     public boolean isRenderAlert() {
         ElectionEvent ee = (ElectionEvent) unfinishedElectionEvents.getRowData();
         String login = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
-        if (nominatingSessionBean.alertCommissioner(ee.getId(), login, elecId)) {
+        if (nominatingSessionBean.alertCommissioner(ee.getId(), login, elecId, "END_NOMINATING")
+                || nominatingSessionBean.alertCommissioner(ee.getId(), login, elecId, "START_VOTING")
+                || nominatingSessionBean.alertCommissioner(ee.getId(), login, elecId, "END_VOTING")) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public String getAlertText() {
+        ElectionEvent ee = (ElectionEvent) unfinishedElectionEvents.getRowData();
+        String login = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
+        if (nominatingSessionBean.alertCommissioner(ee.getId(), login, elecId, "END_NOMINATING")) {
+            return "!! End of nominating was suggested !!";
+        } else if (nominatingSessionBean.alertCommissioner(ee.getId(), login, elecId, "START_VOTING")) {
+            return "!! Start of voting was suggested !!";
+        } else if (nominatingSessionBean.alertCommissioner(ee.getId(), login, elecId, "END_VOTING")) {
+            return "!! End of voting was suggested !!";
+        }
+        return "";
+    }
+
+    public Collection<Commissioner> getAgreedCom() {
+        if (isRenderedTableEndNom()) {
+            return nominatingSessionBean.getComToEndNominating(getEventId());
+        } else if (isRenderedTableStarVot()) {
+            return votingSessionBean.getComToStartVoting(getEventId());
+        } else if (isRenderedTableEndVot()) {
+            return votingSessionBean.getComToEndVoting(getEventId());
+        }
+        return null;
+    }
+
+    public boolean isRenderStartNominating() {
+        eventId = getEventId();
+        if ((nominatingSessionBean.isStartedNominating(eventId) == false) && (votingSessionBean.isStartedVoting(eventId) == false) && (isAnyoneNominated() == false)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isRenderEndNominating() {
+        eventId = getEventId();
+        String login = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
+        if ((nominatingSessionBean.isStartedNominating(eventId) == true) && (votingSessionBean.isStartedVoting(eventId) == false) && (isAnyoneNominated() == true) && !nominatingSessionBean.isComToEndNominating(eventId, login)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isRenderStartVoting() {
+        eventId = getEventId();
+        String login = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
+        if ((nominatingSessionBean.isStartedNominating(eventId) == false) && (votingSessionBean.isStartedVoting(eventId) == false) && (isAnyoneNominated() == true) && !votingSessionBean.isComToStartVoting(eventId, login)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isRenderEndVoting() {
+        eventId = getEventId();
+        String login = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
+        if ((nominatingSessionBean.isStartedNominating(eventId) == false) && (votingSessionBean.isStartedVoting(eventId) == true) && (isAnyoneNominated() == true) && !votingSessionBean.isComToEndVoting(eventId, login)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isRenderedTableEndNom() {
+        eventId = getEventId();
+        if ((nominatingSessionBean.isStartedNominating(eventId) == true) && (votingSessionBean.isStartedVoting(eventId) == false) && (isAnyoneNominated() == true)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isRenderedTableStarVot() {
+        eventId = getEventId();
+        if ((nominatingSessionBean.isStartedNominating(eventId) == false) && (votingSessionBean.isStartedVoting(eventId) == false) && (isAnyoneNominated() == true)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isRenderedTableEndVot() {
+        eventId = getEventId();
+        if ((nominatingSessionBean.isStartedNominating(eventId) == false) && (votingSessionBean.isStartedVoting(eventId) == true) && (isAnyoneNominated() == true)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isAnyoneNominated() {
+        int count = 0;
+        count = getCandidates().size();
+        if (count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String deleteCandidate() {
+        this.candidate = (Candidate) candidatesModel.getRowData();
+        this.eventId = getEventId();
+        try {
+            nominatingSessionBean.deleteCandidateFromEvent(candidate, eventId);
+            FacesMessage m = new FacesMessage("Candidate " + candidate.getLogin() + " was successfully removed");
+            FacesContext.getCurrentInstance().addMessage("nic", m);
+        } catch (ControllerException ex) {
+            Logger.getLogger(VotingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            return "";
+        }
+        return "";
+
+    }
+
+    public Collection<Candidate> getCandidates() {
+        return nominatingSessionBean.getCandidates(getEventId());
+    }
+
+    public DataModel getCandidatesModel() {
+        candidatesModel = new ListDataModel((List) getCandidates());
+        return candidatesModel;
     }
 
     public String viewResultEvent() {
@@ -268,5 +387,20 @@ public class CreateElectionEventJSFManagedBean {
 
     public void setVoterLogin(String voterLogin) {
         this.voterLogin = voterLogin;
+    }
+
+    public String getCommissionersAgreeTableHeader() {
+        if (isRenderedTableEndNom()) {
+            return "Commissioners that agreed with end of nominating";
+        } else if (isRenderedTableStarVot()) {
+            return "Commissioners that agreed with start of voting";
+        } else if (isRenderedTableEndVot()) {
+            return "Commissioners that agreed with end of voting";
+        }
+        return "";
+    }
+
+    public void setCommissionersAgreeTableHeader(String commissionersAgreeTableHeader) {
+        this.commissionersAgreeTableHeader = commissionersAgreeTableHeader;
     }
 }

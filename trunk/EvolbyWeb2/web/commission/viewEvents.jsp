@@ -34,7 +34,7 @@
         </h:column>
         <h:column>
 
-            <h:outputText value="!!! Check the details !!!" styleClass="alertRow" rendered="#{createElectionEvent.renderAlert}"/>
+            <h:outputText value="#{createElectionEvent.alertText}" styleClass="alertRow" rendered="#{createElectionEvent.renderAlert}"/>
 
         </h:column>
         <h:column>

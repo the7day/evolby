@@ -37,13 +37,13 @@ public interface NominatingSessionRemote {
 
     public java.util.Collection<entity.Commissioner> getComToEndNominating(java.lang.Integer eventId);
 
-    public java.lang.Boolean alertCommissioner(java.lang.Integer eventId, java.lang.String login, java.lang.Integer elecId);
-
     public java.lang.Boolean isComToEndNominating(java.lang.Integer eventId, java.lang.String login);
 
     public entity.Election getElectionFromEvent(java.lang.Integer eventId);
 
-    public java.lang.Boolean isMajority(java.lang.Integer eventId);
+    public java.lang.Boolean isMajority(java.lang.Integer eventId, java.lang.String collectionName);
+
+    public java.lang.Boolean alertCommissioner(java.lang.Integer eventId, java.lang.String login, java.lang.Integer elecId, java.lang.String collectionName);
 
     
 }

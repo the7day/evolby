@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package entity;
 
 import java.io.Serializable;
@@ -20,22 +19,26 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class ElectionEvent implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @ManyToMany(mappedBy="votedInEvents")
+    @ManyToMany(mappedBy = "votedInEvents")
     private Collection<Candidate> candidates;
-    @ManyToMany(mappedBy="electionEvents")
+    @ManyToMany(mappedBy = "electionEvents")
     private Collection<Voter> voters;
-    @OneToMany(mappedBy="electionEvent")
+    @OneToMany(mappedBy = "electionEvent")
     private Collection<ElectionResult> electionResults;
     private String name;
     private String info;
     private Boolean votingStarted;
     private Boolean nominatingStarted;
     private Boolean finished;
-
+    @ManyToMany(mappedBy = "eventsToEndNominating")
+    private Collection<Commissioner> comAgreeEndNominating;
+    @ManyToMany(mappedBy = "eventsToStartVoting")
+    private Collection<Commissioner> comAgreeStartVoting;
     @ManyToMany(mappedBy = "eventsToEndVoting")
     private Collection<Commissioner> comAgreeEndVoting;
 
@@ -47,7 +50,21 @@ public class ElectionEvent implements Serializable {
         this.comAgreeEndVoting = comAgreeEndVoting;
     }
 
-    
+    public Collection<Commissioner> getComAgreeStartVoting() {
+        return comAgreeStartVoting;
+    }
+
+    public void setComAgreeStartVoting(Collection<Commissioner> comAgreeStartVoting) {
+        this.comAgreeStartVoting = comAgreeStartVoting;
+    }
+
+    public Collection<Commissioner> getComAgreeEndNominating() {
+        return comAgreeEndNominating;
+    }
+
+    public void setComAgreeEndNominating(Collection<Commissioner> comAgreeEndNominating) {
+        this.comAgreeEndNominating = comAgreeEndNominating;
+    }
 
     public Collection<ElectionResult> getElectionResults() {
         return electionResults;
@@ -56,7 +73,7 @@ public class ElectionEvent implements Serializable {
     public void setElectionResults(Collection<ElectionResult> electionResults) {
         this.electionResults = electionResults;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -144,5 +161,4 @@ public class ElectionEvent implements Serializable {
     public String toString() {
         return "entity.ElectionEvent[id=" + id + "]";
     }
-
 }

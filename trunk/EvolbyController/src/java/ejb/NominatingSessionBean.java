@@ -171,11 +171,12 @@ public class NominatingSessionBean implements NominatingSessionRemote {
         ElectionEvent ee = em.find(ElectionEvent.class, eventId);
         Commissioner com = em.find(Commissioner.class, login);
 
-        ee.getComAgreeEndVoting().add(com);
-        com.getEventsToEndVoting().add(ee);
+        ee.getComAgreeEndNominating().add(com);
+        com.getEventsToEndNominating().add(ee);
         em.persist(ee);
         em.persist(com);
     }
+
     /**
      *
      * @param eventIdid of event
@@ -183,12 +184,12 @@ public class NominatingSessionBean implements NominatingSessionRemote {
      * nomination in ElectionEvent with given ID
      */
     public Collection<Commissioner> getComToEndNominating(Integer eventId) {
-        System.out.println(eventId);
         ElectionEvent ee = em.find(ElectionEvent.class, eventId);
-        Collection<Commissioner> ret = ee.getComAgreeEndVoting();
+        Collection<Commissioner> ret = ee.getComAgreeEndNominating();
         ret.size();
         return ret;
     }
+
     /**
      *
      * @param eventId id of event
@@ -204,6 +205,7 @@ public class NominatingSessionBean implements NominatingSessionRemote {
             return Boolean.FALSE;
         }
     }
+
     /**
      *
      * @param eventId id of event
@@ -211,30 +213,53 @@ public class NominatingSessionBean implements NominatingSessionRemote {
      * @param elecId id of Election
      * @return true, if there is some important action for commissioner
      */
-    public Boolean alertCommissioner(Integer eventId, String login, Integer elecId) {
+    public Boolean alertCommissioner(Integer eventId, String login, Integer elecId, String collectionName) {
         ElectionEvent ee = em.find(ElectionEvent.class, eventId);
         Commissioner com = em.find(Commissioner.class, login);
         Election e = em.find(Election.class, elecId);
-
-        if (e.getCommissioners().contains(com) && !ee.getComAgreeEndVoting().contains(com) && !ee.getComAgreeEndVoting().isEmpty()) {
-            return Boolean.TRUE;
+        Collection coll;
+           if (collectionName.equals("END_NOMINATING")) {
+            coll = ee.getComAgreeEndNominating();
+        } else if (collectionName.equals("START_VOTING")) {
+            coll = ee.getComAgreeStartVoting();
+        } else if (collectionName.equals("END_VOTING")) {
+            coll = ee.getComAgreeEndVoting();
         } else {
             return Boolean.FALSE;
         }
 
-
+        if (e.getCommissioners().contains(com) && !coll.contains(com) && !coll.isEmpty()) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
     }
+
     /**
      *
      * @param eventId ID of ElectionEvent
+     * @param collectionName name of collection in which I am looking for majority
+     * values: END_NOMINATIG, START_VOTING, END_VOTING
      * @return true if there is majority count of commissioners in some issue
      */
-    public Boolean isMajority(Integer eventId) {
+    public Boolean isMajority(Integer eventId, String collectionName) {
+        Integer collectionSize;
         ElectionEvent ee = em.find(ElectionEvent.class, eventId);
         Election e = getElectionFromEvent(eventId);
-        System.out.println("ahoj "+e.getCommissioners().size());
-        System.out.println("ahoj "+ee.getComAgreeEndVoting().size());
-        if (((e.getCommissioners().size()) / 2) < (ee.getComAgreeEndVoting().size())) {
+
+        if (collectionName.equals("END_NOMINATING")) {
+            collectionSize = ee.getComAgreeEndNominating().size();
+        } else if (collectionName.equals("START_VOTING")) {
+            collectionSize = ee.getComAgreeStartVoting().size();
+        } else if (collectionName.equals("END_VOTING")) {
+            collectionSize = ee.getComAgreeEndVoting().size();
+        } else {
+            return Boolean.FALSE;
+        }
+
+        System.out.println("ahoj " + e.getCommissioners().size());
+        System.out.println("ahoj " + collectionSize);
+        if (((e.getCommissioners().size()) / 2) < collectionSize) {
             return Boolean.TRUE;
         } else {
             return Boolean.FALSE;
@@ -260,7 +285,7 @@ public class NominatingSessionBean implements NominatingSessionRemote {
                 }
             }
         }
-        
+
         return null;
     }
 }

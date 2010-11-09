@@ -32,4 +32,16 @@ public interface VotingSessionRemote {
     public Boolean isStartedVoting(java.lang.Integer eventId);
 
     public java.util.List<entity.Voter> getAllVoters();
+
+    public void supportStartVoting(java.lang.Integer eventId, java.lang.String login);
+
+    public void supportEndVoting(java.lang.Integer eventId, java.lang.String login);
+
+    public java.util.Collection<entity.Commissioner> getComToEndVoting(java.lang.Integer eventId);
+
+    public java.util.Collection<entity.Commissioner> getComToStartVoting(java.lang.Integer eventId);
+
+    public java.lang.Boolean isComToEndVoting(java.lang.Integer eventId, java.lang.String login);
+
+    public java.lang.Boolean isComToStartVoting(java.lang.Integer eventId, java.lang.String login);
 }
