@@ -6,7 +6,6 @@ package web;
 
 import ejb.NominatingSessionRemote;
 import ejb.TellerSessionRemote;
-import ejb.VotingSessionRemote;
 import entity.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,8 +15,6 @@ import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -31,13 +28,10 @@ import pojos.ControllerException;
  */
 public class NominatingJSFManagedBean {
 
-    private DataModel candidatesModel;
     private TellerSessionRemote tellerSessionBean;
     private NominatingSessionRemote nominatingSessionBean;
-    private VotingSessionRemote votingSessionBean;
     private Integer eventId;
     private String programme;
-    private Candidate candidate;
 
     public NominatingJSFManagedBean() {
         Context context;
@@ -45,7 +39,6 @@ public class NominatingJSFManagedBean {
             context = new InitialContext();
             tellerSessionBean = (TellerSessionRemote) context.lookup("ejb.TellerSessionRemote");
             nominatingSessionBean = (NominatingSessionRemote) context.lookup("ejb.NominatingSessionRemote");
-            votingSessionBean = (VotingSessionRemote) context.lookup("ejb.VotingSessionRemote");
         } catch (NamingException ex) {
             Logger.getLogger(CreateElectionJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -70,7 +63,7 @@ public class NominatingJSFManagedBean {
     }
 
     public String startNominating() {
-        nominatingSessionBean.startNominating(eventId);
+        nominatingSessionBean.startNominating(getEventId());
         FacesMessage m = new FacesMessage("Nominating started");
         FacesContext.getCurrentInstance().addMessage("", m);
         return "";
@@ -78,51 +71,15 @@ public class NominatingJSFManagedBean {
 
     public String endNominating() {
         nominatingSessionBean.supportEndNominating(getEventId(), FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName());
-        System.out.println("eventid " + eventId);
-        if (nominatingSessionBean.isMajority(eventId)) {
-            nominatingSessionBean.endNominating(eventId);
+        if (nominatingSessionBean.isMajority(getEventId(), "END_NOMINATING")) {
+            nominatingSessionBean.endNominating(getEventId());
+            FacesMessage m = new FacesMessage("Nominating ended");
+            FacesContext.getCurrentInstance().addMessage("", m);
+            return "";
         }
         FacesMessage m = new FacesMessage("You agreed with end of nominating.");
         FacesContext.getCurrentInstance().addMessage("", m);
         return "";
-    }
-
-    public boolean isRenderStartNominating() {
-        eventId = getEventId();
-        if ((nominatingSessionBean.isStartedNominating(eventId) == false) && (votingSessionBean.isStartedVoting(eventId) == false) && (isAnyoneNominated() == false)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isRenderEndNominating() {
-        eventId = getEventId();
-        String login = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
-        if ((nominatingSessionBean.isStartedNominating(eventId) == true) && (votingSessionBean.isStartedVoting(eventId) == false) && (isAnyoneNominated() == true) && !nominatingSessionBean.isComToEndNominating(eventId, login)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isRenderStartVoting() {
-        eventId = getEventId();
-        if ((nominatingSessionBean.isStartedNominating(eventId) == false) && (votingSessionBean.isStartedVoting(eventId) == false) && (isAnyoneNominated() == true)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isRenderEndVoting() {
-        eventId = getEventId();
-
-        if ((nominatingSessionBean.isStartedNominating(eventId) == false) && (votingSessionBean.isStartedVoting(eventId) == true) && (isAnyoneNominated() == true)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public List<SelectItem> getSelectItems() {
@@ -138,10 +95,6 @@ public class NominatingJSFManagedBean {
             Logger.getLogger(NominatingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-    }
-
-    public Collection<Candidate> getCandidates() {
-        return nominatingSessionBean.getCandidates(getEventId());
     }
 
     public Integer getEventId() {
@@ -171,34 +124,4 @@ public class NominatingJSFManagedBean {
         this.programme = programme;
     }
 
-    public DataModel getCandidatesModel() {
-        candidatesModel = new ListDataModel((List) getCandidates());
-        return candidatesModel;
-    }
-
-    public String deleteCandidate() {
-        this.candidate = (Candidate) candidatesModel.getRowData();
-        this.eventId = getEventId();
-        try {
-            nominatingSessionBean.deleteCandidateFromEvent(candidate, eventId);
-            FacesMessage m = new FacesMessage("Candidate " + candidate.getLogin() + " was successfully removed");
-            FacesContext.getCurrentInstance().addMessage("nic", m);
-        } catch (ControllerException ex) {
-            Logger.getLogger(VotingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-            return "";
-        }
-        return "";
-
-    }
-
-    public boolean isAnyoneNominated() {
-        int count = 0;
-        count = getCandidates().size();
-        if (count > 0) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
 }

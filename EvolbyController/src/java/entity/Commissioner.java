@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 /**
@@ -22,16 +23,23 @@ public class Commissioner implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id   
-    private String login;    
+    private String login;
+    
     @ManyToMany
     private Collection<Election> elections;
     private String firstName;
     private String lastName;
    @ManyToMany
+   @JoinTable(name="end_nominating_com_ee")
+    private List<ElectionEvent> eventsToEndNominating;
+
+   @ManyToMany
+   @JoinTable(name="start_voting_com_ee")
+    private List<ElectionEvent> eventsToStartVoting;
+
+   @ManyToMany
+   @JoinTable(name="end_voting_com_ee")
     private List<ElectionEvent> eventsToEndVoting;
-    public String getFirstName() {
-        return firstName;
-    }
 
     public List<ElectionEvent> getEventsToEndVoting() {
         return eventsToEndVoting;
@@ -41,6 +49,32 @@ public class Commissioner implements Serializable {
         this.eventsToEndVoting = eventsToEndVoting;
     }
 
+
+
+    public List<ElectionEvent> getEventsToStartVoting() {
+        return eventsToStartVoting;
+    }
+
+    public void setEventsToStartVoting(List<ElectionEvent> eventsToStartVoting) {
+        this.eventsToStartVoting = eventsToStartVoting;
+    }
+
+   
+
+
+   public String getFirstName() {
+        return firstName;
+    }
+
+    public List<ElectionEvent> getEventsToEndNominating() {
+        return eventsToEndNominating;
+    }
+
+    public void setEventsToEndNominating(List<ElectionEvent> eventsToEndNominating) {
+        this.eventsToEndNominating = eventsToEndNominating;
+    }
+
+   
 
 
     public void setFirstName(String firstName) {

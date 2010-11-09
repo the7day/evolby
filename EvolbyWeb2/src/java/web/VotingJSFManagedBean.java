@@ -38,10 +38,8 @@ public class VotingJSFManagedBean {
     private VotingSessionRemote votingSessionBean;
     private CreatingElectionSessionRemote creatingElectionSessionBean;
     private NominatingSessionRemote nominatingSessionBean;
-
     private Voter voter = null;
     private Integer eventId = null;
-
 
     public VotingJSFManagedBean() throws ControllerException {
         Context context;
@@ -69,26 +67,38 @@ public class VotingJSFManagedBean {
 
     public String startVoting() {
         try {
-            votingSessionBean.startVoting(getEventId());
-            FacesMessage m = new FacesMessage("Voting started");
+            votingSessionBean.supportStartVoting(getEventId(), FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName());
+            if (nominatingSessionBean.isMajority(getEventId(), "START_VOTING")) {
+                votingSessionBean.startVoting(getEventId());
+                FacesMessage m = new FacesMessage("Voting started");
+                FacesContext.getCurrentInstance().addMessage("", m);
+                return "";
+            }
+            FacesMessage m = new FacesMessage("You agreed with start of voting");
             FacesContext.getCurrentInstance().addMessage("", m);
+            return "";
         } catch (ControllerException ex) {
             Logger.getLogger(VotingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
-        return "goMain";
     }
 
     public String endVoting() {
         try {
-            votingSessionBean.endVoting(getEventId());
-            FacesMessage m = new FacesMessage("Voting ended");
+            votingSessionBean.supportEndVoting(getEventId(), FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName());
+            if (nominatingSessionBean.isMajority(getEventId(), "END_VOTING")) {
+                votingSessionBean.endVoting(getEventId());
+                FacesMessage m = new FacesMessage("Voting ended");
+                FacesContext.getCurrentInstance().addMessage("", m);
+                return "goMain";
+            }
+            FacesMessage m = new FacesMessage("You agreed with end of voting");
             FacesContext.getCurrentInstance().addMessage("", m);
+            return "";
         } catch (ControllerException ex) {
             Logger.getLogger(VotingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
-        return "goMain";
     }
 
     public String deleteVoter() throws ControllerException {
@@ -96,16 +106,14 @@ public class VotingJSFManagedBean {
         this.eventId = getEventId();
         try {
             creatingElectionSessionBean.deleteVoterFromEvent(voter, eventId);
-               FacesMessage m = new FacesMessage("Voter "+voter.getLogin()+" was succssfully removed");
-            FacesContext.getCurrentInstance().addMessage("",m);
+            FacesMessage m = new FacesMessage("Voter " + voter.getLogin() + " was succssfully removed");
+            FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(VotingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
         return "";
     }
-
-
 
     public List<SelectItem> getSelectItems() {
         try {
@@ -171,6 +179,4 @@ public class VotingJSFManagedBean {
 
         return (List<Voter>) votingSessionBean.getAllVoters();
     }
-
-
 }

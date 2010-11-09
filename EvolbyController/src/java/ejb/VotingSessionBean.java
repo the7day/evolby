@@ -164,6 +164,61 @@ public class VotingSessionBean implements VotingSessionRemote {
         } else {
             return Boolean.FALSE;
         }
+    }
 
+    public void supportStartVoting(Integer eventId, String login) {
+        Commissioner com = em.find(Commissioner.class, login);
+        ElectionEvent ee = em.find(ElectionEvent.class, eventId);
+
+        com.getEventsToStartVoting().add(ee);
+        ee.getComAgreeStartVoting().add(com);
+
+        em.persist(com);
+        em.persist(ee);
+    }
+
+    public void supportEndVoting(Integer eventId, String login) {
+        Commissioner com = em.find(Commissioner.class, login);
+        ElectionEvent ee = em.find(ElectionEvent.class, eventId);
+
+        com.getEventsToEndVoting().add(ee);
+        ee.getComAgreeEndVoting().add(com);
+
+        em.persist(ee);
+        em.persist(com);
+    }
+
+    public Collection<Commissioner> getComToStartVoting(Integer eventId) {
+        ElectionEvent ee = em.find(ElectionEvent.class, eventId);
+        Collection<Commissioner> ret = ee.getComAgreeStartVoting();
+        ret.size();
+        return ret;
+    }
+
+    public Collection<Commissioner> getComToEndVoting(Integer eventId) {
+        ElectionEvent ee = em.find(ElectionEvent.class, eventId);
+        Collection<Commissioner> ret = ee.getComAgreeEndVoting();
+        ret.size();
+        return ret;
+    }
+
+    public Boolean isComToStartVoting(Integer eventId, String login) {
+        Collection<Commissioner> comCol = getComToStartVoting(eventId);
+        Commissioner com = em.find(Commissioner.class, login);
+        if (comCol.contains(com)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
+    public Boolean isComToEndVoting(Integer eventId, String login) {
+        Collection<Commissioner> comCol = getComToEndVoting(eventId);
+        Commissioner com = em.find(Commissioner.class, login);
+        if (comCol.contains(com)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
     }
 }
