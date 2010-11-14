@@ -6,12 +6,16 @@
 package ejb;
 
 import DTO.ElectionEventResultDTO;
+import com.sun.faces.el.ELConstants;
 import entity.Candidate;
 import entity.ElectionEvent;
 import entity.ElectionResult;
 import entity.Voter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -134,7 +138,12 @@ public class GeneratingResultsSessionBean implements GeneratingResultsSessionRem
             throw new ControllerException("Election event not found.");
         }
         Collection<ElectionResult> electionResults = electionEvent.getElectionResults();
+        List<ElectionResult> resList = new ArrayList<ElectionResult>();
+        resList.addAll(electionResults);
+  
         electionResults.size(); // hack
         return electionResults;
     }
+
+
 }
