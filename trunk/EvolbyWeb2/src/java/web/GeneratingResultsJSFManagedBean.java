@@ -5,7 +5,9 @@
 package web;
 
 import ejb.GeneratingResultsSessionRemote;
+import ejb.NominatingSessionRemote;
 import ejb.TellerSessionRemote;
+import entity.Candidate;
 import entity.ElectionEvent;
 import entity.ElectionResult;
 import java.util.ArrayList;
@@ -32,13 +34,16 @@ public class GeneratingResultsJSFManagedBean {
 
     private GeneratingResultsSessionRemote generatingResultsBean;
     private TellerSessionRemote tellerSessionBean;
+    private NominatingSessionRemote nominatingSessionBean;
     private String eventName;
     private Integer eventId;
+
 
     public GeneratingResultsJSFManagedBean() {
         Context context;
         try {
             context = new InitialContext();
+            nominatingSessionBean = (NominatingSessionRemote) context.lookup("ejb.NominatingSessionRemote");
             tellerSessionBean = (TellerSessionRemote) context.lookup("ejb.TellerSessionRemote");
             generatingResultsBean = (GeneratingResultsSessionRemote) context.lookup("ejb.GeneratingResultsSessionRemote");
         } catch (NamingException ex) {
@@ -58,49 +63,102 @@ public class GeneratingResultsJSFManagedBean {
 
     public Collection<ElectionResult> getElectionEventResults() {
         try {
-            Collection<ElectionResult> results = generatingResultsBean.getElectionEventResults(getEventId());
-
-            if (results.size() == 0) {
+            System.out.println("TRY");
+          Collection<ElectionResult> results = generatingResultsBean.getElectionEventResults(getEventId());
+          Collection<Candidate> candidates = nominatingSessionBean.getCandidates(getEventId());
+            
+            if (results.isEmpty()) {
                 generatingResultsBean.generateResult(getEventId());
                 results = generatingResultsBean.getElectionEventResults(getEventId());
-                System.out.println("EXCEPTED");
-                return results;
-
-
+                if (results.isEmpty() && candidates.isEmpty()) {
+                    Candidate announce = new Candidate();
+                    announce.setLogin("Event had no candidates");
+                    ElectionResult ann = new ElectionResult();
+                    ann.setCandidate(announce);
+                    ann.setVotes(0);
+                    ann.setElected(3);
+                    results.add(ann);
+                    return results;
+                }
             }
+
+              /*  if (results.size()==1 ) {
+                System.out.println("Vyplul som results lebo ==1");
+                List<ElectionResult> r = new ArrayList<ElectionResult>();
+                r.addAll(results);
+                return results;
+            }*/
+
+          //CHECK MISSING PEOPLE
+           List<Candidate> candidatesL = new ArrayList<Candidate>();
+           candidatesL.addAll(candidates);
+            System.out.println("VELKOST " + results.size());
             List<ElectionResult> resList = new ArrayList<ElectionResult>();
             List<ElectionResult> outList = new ArrayList<ElectionResult>();
+            System.out.println("VELKOST " + resList.size());
+            resList.addAll(results);
+            List<Candidate> hadVotes = new ArrayList<Candidate>();
+            for (int i= 0; i < resList.size(); i++) {
+                hadVotes.add(resList.get(i).getCandidate());
+            }
+            for (int i= 0; i < candidatesL.size(); i++) {
+         
+                if(!hadVotes.contains(candidatesL.get(i))){
+                     Candidate looser = new Candidate();
+                    looser.setLogin(candidatesL.get(i).getLogin());
+                    ElectionResult er = new ElectionResult();
+                    er.setCandidate(looser);
+                    er.setVotes(0);
+                    er.setElected(3);
+                    results.add(er);
 
+                } else {
+                    
+                }
+
+            }
+            resList.clear();
+            resList.addAll(results);
+            //END OF CHECK
             try {
-                resList.addAll(results);
+             //   resList.addAll(results);
+                System.out.println("VELKOST " + resList.size());
                 int max;
                 int pos = 0;
-                while(!resList.isEmpty()){
-                    pos=0;
-                    max = resList.get(0).getVotes();
+                if (resList.size() > 1) {
+                    while (!resList.isEmpty()) {
+                        pos = 0;
+                        max = resList.get(0).getVotes();
 
-                    for (int i= 0; i < resList.size(); i++) {
-                        if(max<resList.get(i).getVotes()){
-                            max=resList.get(i).getVotes();
-                            pos=i;
+                        for (int i = 0; i < resList.size(); i++) {
+                            if (max < resList.get(i).getVotes()) {
+                                max = resList.get(i).getVotes();
+                                pos = i;
 
+                            }
                         }
+                        outList.add(resList.get(pos));
+                        resList.remove(pos);
                     }
-                    outList.add(resList.get(pos));
-                    resList.remove(pos);
+                } else {
+                    System.out.println("VYPLUL SOM POVODNE "+ results.size());
+                  //  System.out.println(resList.get(1).getVotes());
 
-
+                    return results;
                 }
+
+
             } catch (Exception ex) {
                 System.out.println(ex);
                 System.out.println("EXCEPTED2");
                 return results;
             }
-           results.clear();
+            results.clear();
             results.addAll(outList);
             System.out.println("CLEARED");
             return results;
         } catch (ControllerException ex) {
+            System.out.println("Vyplul som null");
             Logger.getLogger(GeneratingResultsJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
@@ -132,4 +190,5 @@ public class GeneratingResultsJSFManagedBean {
     public void setEventName(String name) {
         eventName = name;
     }
+
 }

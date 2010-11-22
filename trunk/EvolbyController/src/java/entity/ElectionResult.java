@@ -28,6 +28,17 @@ public class ElectionResult implements Serializable {
     private Integer votes;
     @ManyToOne
     private ElectionEvent electionEvent;
+    //elected integer = 1 YES, 2 NO BECAUSE OF LACK OF SPACE, 3 NO BECAUSE OF INSUFFICENT votes
+    private int elected;
+
+    public int getElected() {
+        return elected;
+    }
+
+    public void setElected(int elected) {
+        this.elected = elected;
+    }
+
 
     public ElectionEvent getElectionEvent() {
         return electionEvent;
@@ -83,6 +94,14 @@ public class ElectionResult implements Serializable {
     @Override
     public String toString() {
         return "entity.ElectionResult[id=" + id + "]";
+    }
+
+    public int getSVotes() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public int getTVotes() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
 }

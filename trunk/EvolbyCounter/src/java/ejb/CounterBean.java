@@ -47,7 +47,11 @@ public class CounterBean implements CounterRemote {
             throw new CounterException("Election event not found.");
         }
         int arraySize = electionEvent.getVotesCounts().size();
+     //  int arraySize = electionEvent.getCandidates().size();
+
+       // System.out.println(electionEvent.getCandidates().size());
         System.out.println("Counter VotesCount arraysize: " + arraySize);
+        System.out.println("Counter VoterCandicats " +electionEvent.getCandidates().size());
         String[] candidates = new String[arraySize];
         int[] votes = new int[arraySize];
         int i = 0;
@@ -59,6 +63,10 @@ public class CounterBean implements CounterRemote {
         result.setElectionEvent(electionEventId);
         result.setCandidates(candidates);
         result.setVotes(votes);
+        System.out.println("result.getCandidates length "+result.getCandidates().length);
+        for (int j = 0; j < result.getCandidates().length; j++) {
+                System.out.println("Results names for "+result.getCandidates()[j]);
+        }
         return result;
     }
 
