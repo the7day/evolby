@@ -80,7 +80,7 @@ public class CreateElectionEventJSFManagedBean {
     public String createEvent() {
         try {
             electionSessionBean.createElectionEvent(elecId, eventName, info);
-            FacesMessage m = new FacesMessage("Event was succesfully created");
+            FacesMessage m = new FacesMessage("Event \"" + eventName + "\" was succesfully created");
             FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(CreateElectionEventJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -361,7 +361,7 @@ public class CreateElectionEventJSFManagedBean {
         this.elecId = elecId;
     }
 
-    public Integer getElecId() {
+    public Integer getElecId(){
         return elecId;
     }
 

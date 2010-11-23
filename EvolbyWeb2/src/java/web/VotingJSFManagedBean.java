@@ -106,7 +106,7 @@ public class VotingJSFManagedBean {
         this.eventId = getEventId();
         try {
             creatingElectionSessionBean.deleteVoterFromEvent(voter, eventId);
-            FacesMessage m = new FacesMessage("Voter " + voter.getLogin() + " was succssfully removed");
+            FacesMessage m = new FacesMessage("Voter " + voter.getLogin() + " was successfully removed");
             FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(VotingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -120,8 +120,12 @@ public class VotingJSFManagedBean {
             String login = tellerSessionBean.getLoginLoggedUser();
             List<ElectionEvent> electionEvents = votingSessionBean.getVoterElectionEvents(login);
             List<SelectItem> items = new ArrayList<SelectItem>();
+            Election electionForEvent;
+            String electionsAndEvent;
             for (ElectionEvent event : electionEvents) {
-                items.add(new SelectItem(event.getId()));
+                electionForEvent = nominatingSessionBean.getElectionFromEvent(event.getId());
+                electionsAndEvent = electionForEvent.getName() + " - " + event.getName();
+                items.add(new SelectItem(event.getId(), electionsAndEvent));
             }
             return items;
         } catch (ControllerException ex) {

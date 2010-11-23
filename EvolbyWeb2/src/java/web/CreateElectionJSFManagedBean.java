@@ -22,7 +22,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import pojos.ControllerException;
 
-/**
+/** 
  *
  * @author lordondrak
  */
@@ -31,7 +31,7 @@ public class CreateElectionJSFManagedBean {
     private CreatingElectionSessionRemote creatingElectionSessionBean;
 
     private String name;
-    private String currentType;
+    private String currentType = "Internet";
     private String commissioners;
     private List<SelectItem> personSel;
     private Integer electionId;
@@ -81,7 +81,7 @@ public class CreateElectionJSFManagedBean {
             Logger.getLogger(CreateElectionJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
-        return "success";
+        return "";
     }
 
     public Collection<Commissioner> getElectionCommissioners() {
