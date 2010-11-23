@@ -9,6 +9,7 @@ import ejb.TellerSessionRemote;
 import entity.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +60,7 @@ public class NominatingJSFManagedBean {
             Logger.getLogger(NominatingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
-        return "goMain";
+        return "goNominate";
     }
 
     public String startNominating() {
@@ -87,8 +88,13 @@ public class NominatingJSFManagedBean {
             String login = tellerSessionBean.getLoginLoggedUser();
             Collection<ElectionEvent> electionEvents = nominatingSessionBean.getVoterElectionEvents(login);
             List<SelectItem> items = new ArrayList<SelectItem>();
+            Election electionForEvent;
+            String electionsAndEvent;
             for (ElectionEvent event : electionEvents) {
-                items.add(new SelectItem(event.getId()));
+                electionForEvent = nominatingSessionBean.getElectionFromEvent(event.getId());
+                electionsAndEvent = electionForEvent.getName() + " - " + event.getName();
+                //value=id, rendered=elections+event name
+                items.add(new SelectItem(event.getId(), electionsAndEvent));
             }
             return items;
         } catch (ControllerException ex) {
@@ -123,5 +129,4 @@ public class NominatingJSFManagedBean {
     public void setProgramme(String programme) {
         this.programme = programme;
     }
-
 }
