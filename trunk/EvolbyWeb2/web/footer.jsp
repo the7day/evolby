@@ -7,7 +7,7 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 
 </div>
-<div class="foot">Made by E-volby team.</div>
+<div class="foot">Made by E-volby2010 team.</div>
 </div>
 
 </body>

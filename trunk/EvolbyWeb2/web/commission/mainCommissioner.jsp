@@ -3,13 +3,11 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
-    <h:messages />
-    <h1>Main commissioner</h1>
-    <p>Welcome commissioner, please choose one of following option.</p>
-    <ul class="buttons">
+    <div class="menu">
+        <ul class="buttons">
         <li>
             <h:outputLink value="commissionerElection.jsf">
-                My election
+                View election
             </h:outputLink>
         </li>
         <li>
@@ -18,6 +16,11 @@
             </h:form>
         </li>
     </ul>
+        <h1>Main page</h1>
+    </div>
+    <h:messages />
+    <p>Hello commissioner, choose from the menu above.</p>
+
 </f:view>
 <jsp:include page="../footer.jsp" />
 

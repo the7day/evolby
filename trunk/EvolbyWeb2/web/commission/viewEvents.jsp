@@ -4,62 +4,60 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
-    <h:messages />
-    <h1>Election events</h1>
+    <div class="menu">
+        <ul class="buttons">
+            <li>
+                <h:outputLink value="commissionerElection.jsf">
+                    View election
+                </h:outputLink>
+            </li>
+            <li>
+                <h:form>
+                    <h:commandLink value="logout" action="#{default.logout}"/>
+                </h:form>
+            </li>
+        </ul>
+        <h1>Election events</h1>
+    </div>
+    <h:messages styleClass="message"/>
 
-    <h:dataTable styleClass="elections" cellspacing="1" value="#{createElectionEvent.unfinishedElectionEventsModel}" var="item">
+    <h:dataTable styleClass="electionsInfo" cellspacing="1" value="#{createElectionEvent.unfinishedElectionEventsModel}" var="item">
         <h:column>
             <f:facet name="header">
                 <h:outputText value="Name"/>
             </f:facet>
-            <h:outputText value="#{item.name}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="Id"/>
-            </f:facet>
-            <h:outputText value="#{item.id}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="nominating started"/>
-            </f:facet>
-            <h:outputText value="#{item.nominatingStarted}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="voting started"/>
-            </f:facet>
-            <h:outputText value="#{item.votingStarted}"/>
-        </h:column>
-        <h:column>
-
-            <h:outputText value="#{createElectionEvent.alertText}" styleClass="alertRow" rendered="#{createElectionEvent.renderAlert}"/>
-
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="edit"/>
-            </f:facet>
             <h:form>
-                <h:commandLink value="view" action="#{createElectionEvent.viewEvent}">
+                <h:commandLink styleClass="link"  action="#{createElectionEvent.viewEvent}">
+                    <h:outputText value="#{item.name}"/>
                     <f:param name="eventId" value="#{item.id}"/>
                     <f:param name="elecId" value="#{createElectionEvent.elecId}"/>
                 </h:commandLink>
             </h:form>
         </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Nominating"/>
+            </f:facet>
+            <h:outputText value="#{item.nominatingStarted}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Voting"/>
+            </f:facet>
+            <h:outputText  value="#{item.votingStarted}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Messages"/>
+            </f:facet>
+            <h:outputText value="#{createElectionEvent.alertText}" styleClass="alertRow" rendered="#{createElectionEvent.renderAlert}"/>
+        </h:column>
     </h:dataTable>
-    <br/>
     <ul class="buttons">
         <li>
             <h:outputLink  value="createNewEvent.jsf">
                 Create new event
                 <f:param name="elecId" value="#{createElectionEvent.elecId}"/>
-            </h:outputLink>
-        </li>
-        <li>
-            <h:outputLink styleClass="buttons" value="mainCommissioner.jsf">
-                Menu
             </h:outputLink>
         </li>
     </ul>
