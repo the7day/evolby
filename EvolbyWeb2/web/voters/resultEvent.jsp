@@ -5,8 +5,33 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
-    <h:messages />
-    <h1><h:outputText value="Election results"/></h1>
+    <div class="menu">
+        <ul class="buttons">
+            <li>
+                <h:outputLink value="nominating.jsf">
+                    nominate
+                </h:outputLink>
+            </li>
+            <li>
+                <h:outputLink  value="voting.jsf">
+                    vote
+                </h:outputLink>
+            </li>
+            <li>
+                <h:outputLink  value="endedEvents.jsf">
+                    results
+                </h:outputLink>
+            </li>
+            <li>
+                <h:form>
+                    <h:commandLink value="logout" action="#{default.logout}"/>
+                </h:form>
+            </li>
+        </ul>
+        <h1>Results</h1>
+    </div>
+    <h:messages styleClass="message" />
+    
     <h:dataTable styleClass="elections" cellspacing="1" value="#{generatingResults.electionEventResults}" var="item">
         <h:column>
             <f:facet name="header">

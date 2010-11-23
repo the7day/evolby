@@ -3,29 +3,30 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
+    <div class="menu">
+        <ul class="buttons">
+            <li>
+                <h:outputLink value="commissionerElection.jsf">
+                    View election
+                </h:outputLink>
+            </li>
+            <li>
+                <h:form>
+                    <h:commandLink value="logout" action="#{default.logout}"/>
+                </h:form>
+            </li>
+        </ul>
+        <h1>Elections</h1>
+    </div>
     <h:messages />
-    <h1>Yours elections</h1>
-    <h:dataTable styleClass="elections" cellspacing="0" value="#{createElectionEvent.comElection}" var="item">
+    <h:dataTable styleClass="electionsInfo" cellspacing="0" value="#{createElectionEvent.comElection}" var="item">
         <h:column>
-            <f:facet name="header">
-                <h:outputText value="Name"/>
-            </f:facet>
-            <h:outputText value="#{item.name}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="Election events"/>
-            </f:facet>
-            <h:outputLink value="viewEvents.jsf">
-                events
+            <h:outputLink styleClass="link" value="viewEvents.jsf">
+                <h:outputText value="#{item.name}"/>
                 <f:param name="elecId" value="#{item.id}"/>
             </h:outputLink>
         </h:column>
     </h:dataTable>
-                <br/>
-    <h:outputLink styleClass="button" value="mainCommissioner.jsf">
-        Menu
-    </h:outputLink>
 </f:view>
 
 <jsp:include page="../footer.jsp" />

@@ -4,7 +4,7 @@
 
 <jsp:include page="../header.jsp" />
 <f:view>
-    <h:messages />
+    <h:messages styleClass="message" />
     <h1><h:outputText value="Voting"/></h1>
     <f:verbatim>
         <jsp:plugin type="applet"
