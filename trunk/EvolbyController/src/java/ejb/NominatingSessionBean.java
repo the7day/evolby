@@ -16,6 +16,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import pojos.ControllerException;
 
+import javax.annotation.Resource;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Date;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+
 /**
  *
  * @author defiler
@@ -172,14 +181,61 @@ public class NominatingSessionBean implements NominatingSessionRemote {
         Commissioner com = em.find(Commissioner.class, login);
 
         ee.getComAgreeEndNominating().add(com);
+
+        //if called by the first commissioner
+        if (ee.getComAgreeEndNominating().size() == 1) {
+            Election e = getElectionFromEvent(eventId);
+            //get collection of other commissioners
+            Collection<Commissioner> colCom = e.getCommissioners();
+            colCom.remove(com);
+            Iterator it = colCom.iterator();
+            Commissioner next = null;
+            //send mail to everyone
+            while (it.hasNext()) {
+                next = (Commissioner) it.next();
+                String recipient = next.getLogin();
+                String name = next.getFirstName() + " " + next.getLastName();
+                String text = "Hello commissioner " + name + ",\n"
+                        + "your privileged action is required to end the nominating for election event " + eventId + ".\n\n\n"
+                        + "-----------------------" + "\n"
+                        + "This message was sent by the E-volby system," + "\n"
+                        + "please contact the system administrator if you think this should not have happend.";
+                sendMail(recipient, text);
+            }
+        }
+
         com.getEventsToEndNominating().add(ee);
         em.persist(ee);
         em.persist(com);
     }
+    @Resource(name = "mail/evolbyMailSession")
+    private Session mailSession;
 
     /**
-     *
-     * @param eventIdid of event
+     * Sends an email message to inform commissioner about a privileged action
+     * @param com The recipient of this message.
+     * @param eventId Id of an event associated with this message.
+     */
+    public void sendMail(String recipient, String text) {
+
+        recipient += "@fel.cvut.cz";
+        System.out.println("Sending mail to:" + recipient);
+        Message message = new MimeMessage(mailSession);
+        String subject = "Evolby - Your privileged action is required";
+        Date timeStamp = new Date();
+        try {
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient, false));
+            message.setSubject(subject);
+            message.setText(text);
+            message.setSentDate(timeStamp);
+            //uncomment to actually send the mail
+            //Transport.send(message);
+        } catch (javax.mail.MessagingException me) {
+        }
+    }
+
+    /**
+     * @param eventId id of event
      * @return Collection of commissioners that agreed with end of
      * nomination in ElectionEvent with given ID
      */
@@ -218,7 +274,7 @@ public class NominatingSessionBean implements NominatingSessionRemote {
         Commissioner com = em.find(Commissioner.class, login);
         Election e = em.find(Election.class, elecId);
         Collection coll;
-           if (collectionName.equals("END_NOMINATING")) {
+        if (collectionName.equals("END_NOMINATING")) {
             coll = ee.getComAgreeEndNominating();
         } else if (collectionName.equals("START_VOTING")) {
             coll = ee.getComAgreeStartVoting();
