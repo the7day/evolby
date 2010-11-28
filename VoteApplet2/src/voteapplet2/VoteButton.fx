@@ -22,6 +22,7 @@ public class VoteButton extends CustomNode {
 
     public var elected: Boolean;
     public var candidate: CandidateNode;
+    
     def yes: Node = Group {
                 content: [
                     Circle {

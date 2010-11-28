@@ -14,7 +14,7 @@ import pojos.ControllerException;
 import pojos.ValidatorException;
 
 /**
- * Trida zarucuji komunikaci se serverem.
+ * Trida zajistujici komunikaci se serverem.
  * @author Tomáš Čerevka
  */
 public class Communication {
@@ -26,7 +26,11 @@ public class Communication {
     private String port;
 
     /**
-     * Kontrukturor.
+     * Vytvoreni komunikacniho objektu fixovaneho na dane prostredi.
+     * @param voter Login hlasujiciho volice.
+     * @param event ID udalosti, v niz se hlasuje.
+     * @param host IP adresa, na ktere posloucha server.
+     * @param port Port, na kterem posloucha server.
      */
     public Communication(String voter, int event, String host, String port) {
         this.voter = voter;
@@ -44,8 +48,8 @@ public class Communication {
         VotingSessionRemote votingBean;
         try {
             Properties props = new Properties();
-            props.setProperty("org.omg.CORBA.ORBInitialHost", "127.0.0.1");
-            props.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
+            props.setProperty("org.omg.CORBA.ORBInitialHost", this.host);
+            props.setProperty("org.omg.CORBA.ORBInitialPort", this.port);
             Context context = new InitialContext(props);
             // nacte se vzdalena beana
             votingBean = (VotingSessionRemote) context.lookup("ejb.VotingSessionRemote");
@@ -97,14 +101,18 @@ public class Communication {
         return candidateList.size();
     }
 
+    /**
+     * Odesle na server seznam zvolenych kandidatu.
+     * @return True = uspech, false = neuspech.
+     */
     public boolean sendVoteCard() {
         ValidatorSessionRemote validator;
 
         try {
             // pripravi se prostredi
             Properties props = new Properties();
-            props.setProperty("org.omg.CORBA.ORBInitialHost", "127.0.0.1");
-            props.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
+            props.setProperty("org.omg.CORBA.ORBInitialHost", this.host);
+            props.setProperty("org.omg.CORBA.ORBInitialPort", this.port);
             Context context = new InitialContext(props);
 
             // nacte se vzdalena beana
@@ -124,10 +132,9 @@ public class Communication {
             }
         }
 
-
-
         // sestavi se listek        
-        VotingCardDTO votingCard = new VotingCardDTO( (String[]) electedCandidates.toArray(new String[electedCandidates.size()]), this.voter, this.event);
+        VotingCardDTO votingCard = new VotingCardDTO( (String[]) electedCandidates.toArray(new String[electedCandidates.size()]),
+                this.voter, this.event);
 
         try {
             validator.sendVote(votingCard);

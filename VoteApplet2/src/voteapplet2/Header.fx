@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.DropShadow;
 
 /**
+ * Nadefinovani hlavicky appletu.
  * @author Tomáš Čerevka
  */
 var stageInitialX: Number;

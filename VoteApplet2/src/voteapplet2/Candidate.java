@@ -56,10 +56,18 @@ public class Candidate {
         return this.firstName + " " + this.surname;
     }
 
+    /**
+     * Zjisti, zda byl kandidat zvolen.
+     * @return true = zvolen, false = nezvolen.
+     */
     public boolean isElected() {
         return this.elected;
     }
 
+    /**
+     * Nastavi priznak zvoleni/nezvoleni.
+     * @param elected Priznak - true = zvolen, false = nezvolen.
+     */
     public void setElected(boolean elected) {
         this.elected = elected;
     }
