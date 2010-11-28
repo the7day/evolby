@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
  * Applet pro elektronicke volby.
  * @author Tomáš Čerevka
  */
+ 
 // Nastaveni promennych prostedi.
 public var stageTitle: String = "Volební lístek";
 public var stageX: Number = 100;
@@ -35,8 +36,7 @@ public function run() {
     var host: String = "127.0.0.1"; //FX.getArgument("host").toString();
     var port: String = "3700"; //FX.getArgument("port").toString();
 
-    // Zahaji se komunikace s beanou.
-    
+    // Zahaji se komunikace s beanou.    
     communication = new Communication(voter, Integer.parseInt(event), host, port);
     communication.recieveCandidates();
     var candidates = for (i in [0..communication.getCount() - 1]) {                

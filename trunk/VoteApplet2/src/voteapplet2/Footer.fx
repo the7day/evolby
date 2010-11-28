@@ -20,8 +20,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Alert;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
+
 /**
+ * Nadefinovani paticky appletu.
  * @author Tomáš Čerevka
  */
 public var footer = HBox {
