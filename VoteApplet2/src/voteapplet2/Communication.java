@@ -1,6 +1,8 @@
 package voteapplet2;
 
 import DTO.CandidateDTO;
+import DTO.VotingCardDTO;
+import ejb.ValidatorSessionRemote;
 import java.util.List;
 import ejb.VotingSessionRemote;
 import java.util.ArrayList;
@@ -9,23 +11,28 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import pojos.ControllerException;
+import pojos.ValidatorException;
 
 /**
  * Trida zarucuji komunikaci se serverem.
  * @author Tomáš Čerevka
  */
 public class Communication {
-    
+
     private String voter;
     private int event;
     private List<Candidate> candidateList;
+    private String host;
+    private String port;
 
     /**
      * Kontrukturor.
      */
-    public Communication(String voter, int event) {
+    public Communication(String voter, int event, String host, String port) {
         this.voter = voter;
         this.event = event;
+        this.host = host;
+        this.port = port;
         candidateList = new ArrayList<Candidate>();
     }
 
@@ -37,11 +44,7 @@ public class Communication {
         VotingSessionRemote votingBean;
         try {
             Properties props = new Properties();
-            // Nastavi se prostredi pro komunikaci s beanou.
-            //props.setProperty("java.naming.factory.initial", "com.sun.enterprise.naming.SerialInitContextFactory");
-            //props.setProperty("java.naming.factory.url.pkgs", "com.sun.enterprise.naming");
-            // props.setProperty("java.naming.factory.state", "com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl");
-            props.setProperty("org.omg.CORBA.ORBInitialHost", "147.32.94.91");
+            props.setProperty("org.omg.CORBA.ORBInitialHost", "127.0.0.1");
             props.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
             Context context = new InitialContext(props);
             // nacte se vzdalena beana
@@ -64,11 +67,11 @@ public class Communication {
             candidateList.add(new Candidate(
                     candidates[i].getLogin(),
                     candidates[i].getFirstName(),
-                    candidates[i].getLastName()));            
+                    candidates[i].getLastName()));
         }
         return true;
     }
-    
+
     /**
      * Preda seznam kandidatu.
      * @return Seznam kandidatu.
@@ -77,6 +80,14 @@ public class Communication {
         return candidateList;
     }
 
+    /**
+     * Nastavi u daneho kandidata v kolekci priznak zvoleni.
+     * @param i Pozice kandidata v seznamu.
+     * @param elected Priznak, na kterou hodnotu nastavit.
+     */
+    public void setElected(int i, boolean elected) {
+        this.candidateList.get(i).setElected(elected);
+    }
 
     /**
      * Vrati pocet kandidatu.
@@ -86,6 +97,44 @@ public class Communication {
         return candidateList.size();
     }
 
+    public boolean sendVoteCard() {
+        ValidatorSessionRemote validator;
+
+        try {
+            // pripravi se prostredi
+            Properties props = new Properties();
+            props.setProperty("org.omg.CORBA.ORBInitialHost", "127.0.0.1");
+            props.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
+            Context context = new InitialContext(props);
+
+            // nacte se vzdalena beana
+            validator = (ValidatorSessionRemote) context.lookup("ejb.ValidatorSessionRemote");
+        } catch (NamingException ex) {
+            System.err.println("Naming exception: " + ex.toString());
+            return false;
+        }
+
+        // pripravi se zvoleni kandidati k odeslani
+        List<String> electedCandidates = new ArrayList<String>();
+        for (Candidate candidate : candidateList) {
+            if (candidate.isElected()) {
+                // je-li zvolen, vlozi se jeho login do seznamu
+                electedCandidates.add(candidate.getLogin());
+                System.out.println(candidate.getLogin());
+            }
+        }
 
 
+
+        // sestavi se listek        
+        VotingCardDTO votingCard = new VotingCardDTO( (String[]) electedCandidates.toArray(new String[electedCandidates.size()]), this.voter, this.event);
+
+        try {
+            validator.sendVote(votingCard);
+        } catch (ValidatorException ex) {
+            System.err.println("Validator exception: " + ex.toString());
+            return false;
+        }
+        return true;
+    }
 }

@@ -56,4 +56,12 @@ public class Candidate {
         return this.firstName + " " + this.surname;
     }
 
+    public boolean isElected() {
+        return this.elected;
+    }
+
+    public void setElected(boolean elected) {
+        this.elected = elected;
+    }
+
 }
