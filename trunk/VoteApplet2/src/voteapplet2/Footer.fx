@@ -18,7 +18,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Alert;
-
+import javafx.scene.Node;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 /**
  * @author Tomáš Čerevka
  */
@@ -30,26 +32,36 @@ public var footer = HBox {
             nodeVPos: VPos.CENTER,
             content: [
                 Group {
+                    var button: Node,
                     content: [
-                        Rectangle {
-                            width: bind Main.scene.width / 3, height: bind Main.scene.height / 15,
-                            arcWidth: 20, arcHeight: 20,
-                            cursor: Cursor.HAND,
-                            fill: LinearGradient {
-                                startX: 0.0, startY: 0.0,
-                                endX: 0.0, endY: 1.0,
-                                proportional: true,
-                                stops: [
-                                    Stop { offset: 0.0, color: Color.web("#99ddff") },
-                                    Stop { offset: 0.5, color: Color.web("#337799") },
-                                    Stop { offset: 1.0, color: Color.web("#99ddff") },
-                                ] // stops
-                            }, // fill
-                            onMouseClicked: function (e: MouseEvent) {
-                                Alert.inform("Hlas byl odeslan.");
-                            }
+                        button = Rectangle {
+                                    width: bind Main.scene.width / 3, height: bind Main.scene.height / 15,
+                                    arcWidth: 20, arcHeight: 20,
+                                    cursor: Cursor.HAND,
+                                    fill: LinearGradient {
+                                        startX: 0.0, startY: 0.0,
+                                        endX: 0.0, endY: 1.0,
+                                        proportional: true,
+                                        stops: [
+                                            Stop { offset: 0.0, color: Color.web("#99ddff") },
+                                            Stop { offset: 0.5, color: Color.web("#337799") },
+                                            Stop { offset: 1.0, color: Color.web("#99ddff") },
+                                        ] // stops
+                                    }, // fill  
+                                    effect: DropShadow {
+                                        color: Color.BLACK,
+                                        radius: 4,
+                                    },
 
-                        }, // rectangle
+                                    onMouseClicked: function(e: MouseEvent) {
+                                        if (Main.communication.sendVoteCard()) {
+                                            Alert.inform("Hlas byl odeslan.");
+                                        } else {
+                                            Alert.inform("Ups, neco je spatne.");
+                                        }
+
+                                    }
+                                }, // rectangle
                         HBox {
                             width: bind Main.scene.width / 3, height: bind Main.scene.height / 15,
                             hpos: HPos.CENTER, nodeVPos: VPos.CENTER,
@@ -80,7 +92,11 @@ public var footer = HBox {
                                     Stop { offset: 1.0, color: Color.web("#99ddff") },
                                 ] // stops
                             }, // fill
-                            onMouseClicked: function (e: MouseEvent) {
+                            effect: DropShadow {
+                                color: Color.BLACK,
+                                radius: 4,
+                            }
+                            onMouseClicked: function(e: MouseEvent) {
                                 FX.exit();
                             }
                         }, // rectangle

@@ -16,14 +16,13 @@ import javafx.scene.layout.HBox;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.effect.DropShadow;
 
 /**
  * @author Tomáš Čerevka
  */
-
 var stageInitialX: Number;
 var stageInitialY: Number;
-
 public var header = Group {
             content: [
                 Rectangle {
@@ -39,11 +38,15 @@ public var header = Group {
                             Stop { offset: 1.0, color: Color.web("#337799") },
                         ] // fill - linear gradient - stops
                     }, // fill - linear gradient
-                    onMousePressed: function (e: MouseEvent) {
+                    effect: DropShadow {
+                        color: Color.BLACK
+                        radius: 10
+                    }
+                    onMousePressed: function(e: MouseEvent) {
                         stageInitialX = e.screenX - Main.stageX;
                         stageInitialY = e.screenY - Main.stageY;
                     }, // on mouse pressed
-                    onMouseDragged: function (e: MouseEvent) {
+                    onMouseDragged: function(e: MouseEvent) {
                         Main.stageX = e.screenX - stageInitialX;
                         Main.stageY = e.screenY - stageInitialY;
                     } // on mouse dragged
