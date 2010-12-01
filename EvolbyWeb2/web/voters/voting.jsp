@@ -8,33 +8,33 @@
         <ul class="buttons">
             <li>
                 <h:outputLink value="nominating.jsf">
-                    nominate
+                    Nominovat
                 </h:outputLink>
             </li>
             <li>
                 <h:outputLink  value="voting.jsf">
-                    vote
+                    Volit
                 </h:outputLink>
             </li>
             <li>
                 <h:outputLink  value="endedEvents.jsf">
-                    results
+                    Výsledky
                 </h:outputLink>
             </li>
             <li>
                 <h:form>
-                    <h:commandLink value="logout" action="#{default.logout}"/>
+                    <h:commandLink value="Odhlásit" action="#{default.logout}"/>
                 </h:form>
             </li>
         </ul>
-        <h1>Nominate</h1>
+        <h1>Volení</h1>
     </div>
     <h:messages styleClass="message" />
 
     <table class="form" cellspacing="1">
         <tbody>
             <tr>
-                <th>Election event:</th>
+                <th>Volební událost:</th>
                 <td>
                     <h:selectOneMenu value="#{voting.eventId}">
                         <f:selectItems value="#{voting.selectItems}" />
@@ -44,7 +44,7 @@
             <tr>
                 <td colspan="2" class="button">
                     <h:form>
-                        <h:commandButton value="Vote" action="#{voting.goVote}" />
+                        <h:commandButton value="Volit" action="#{voting.goVote}" />
                     </h:form>
                 </td>
             </tr>

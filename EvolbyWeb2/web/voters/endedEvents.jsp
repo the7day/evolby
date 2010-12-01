@@ -3,48 +3,50 @@
 <jsp:include page="../header.jsp" />
 
 <f:view>
-        <div class="menu">
+    <div class="menu">
         <ul class="buttons">
             <li>
                 <h:outputLink value="nominating.jsf">
-                    nominate
+                    Nominovat
                 </h:outputLink>
             </li>
             <li>
                 <h:outputLink  value="voting.jsf">
-                    vote
+                    Hlasovat
                 </h:outputLink>
             </li>
             <li>
                 <h:outputLink  value="endedEvents.jsf">
-                    results
+                    Výsledky
                 </h:outputLink>
             </li>
             <li>
                 <h:form>
-                    <h:commandLink value="logout" action="#{default.logout}"/>
+                    <h:commandLink value="Odhlásit" action="#{default.logout}"/>
                 </h:form>
             </li>
         </ul>
-        <h1>Ended events</h1>
+        <h1>Výsledky</h1>
     </div>
     <h:messages styleClass="message" />
     <h:dataTable styleClass="electionsInfo" cellspacing="1" value="#{createElectionEvent.endedEvents}" var="item">
+        <%--
         <h:column>
             <f:facet name="header">
                 <h:outputText value="Id"/>
             </f:facet>
             <h:outputText value="#{item.id}"/>
         </h:column>
+        --%>
         <h:column>
             <f:facet name="header">
-                <h:outputText value="Name"/>
+                <h:outputText value="Událost"/>
             </f:facet>
             <h:outputText value="#{item.name}"/>
         </h:column>
         <h:column>
             <f:facet name="header">
-                <h:outputText value="Result"/>
+                <h:outputText value="Výsledek"/>
             </f:facet>
             <h:form>
                 <h:commandLink value="result" action="#{createElectionEvent.viewResultEvent}">

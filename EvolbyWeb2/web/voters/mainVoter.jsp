@@ -6,30 +6,30 @@
         <ul class="buttons">
             <li>
                 <h:outputLink value="nominating.jsf">
-                    nominate
+                    Nominovat
                 </h:outputLink>
             </li>
             <li>
                 <h:outputLink  value="voting.jsf">
-                    vote
+                    Hlasovat
                 </h:outputLink>
             </li>
             <li>
                 <h:outputLink  value="endedEvents.jsf">
-                    results
+                    Výsledky
                 </h:outputLink>
             </li>
             <li>
                 <h:form>
-                    <h:commandLink value="logout" action="#{default.logout}"/>
+                    <h:commandLink value="Odhlásit" action="#{default.logout}"/>
                 </h:form>
             </li>
         </ul>
-        <h1>Main page</h1>
+        <h1>Hlavní strana</h1>
     </div>
     <h:messages styleClass="message" />
 
-    <p>Hello voter, please choose from the menu above.</p>
+    <p>Vítejte. Vyberte akci z menu nahoře.</p>
 
 
 
