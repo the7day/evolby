@@ -11,20 +11,20 @@ import entity.Candidate;
 import entity.ElectionEvent;
 import entity.ElectionResult;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 import pojos.ControllerException;
-import sun.misc.Sort;
 
 /**
  *
@@ -37,6 +37,7 @@ public class GeneratingResultsJSFManagedBean {
     private NominatingSessionRemote nominatingSessionBean;
     private String eventName;
     private Integer eventId;
+    private DataModel eeResultModel;
 
 
     public GeneratingResultsJSFManagedBean() {
@@ -189,6 +190,22 @@ public class GeneratingResultsJSFManagedBean {
 
     public void setEventName(String name) {
         eventName = name;
+    }
+
+    public DataModel getEeResultModel(){
+        eeResultModel = new ListDataModel((List) getElectionEventResults());
+        return eeResultModel;
+    }
+
+    public String getVotingResultLabel(){
+        ElectionResult er = (ElectionResult) eeResultModel.getRowData();
+        Integer i = er.getElected();
+        switch(i){
+            case 1: return "Zvolen";
+            case 2: return "Nedostatek místa";
+            case 3: return "Nesplňuje podmínky";
+            default: return "Chyba";
+        }
     }
 
 }

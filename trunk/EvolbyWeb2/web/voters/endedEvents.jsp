@@ -49,7 +49,7 @@
                 <h:outputText value="Výsledek"/>
             </f:facet>
             <h:form>
-                <h:commandLink value="result" action="#{createElectionEvent.viewResultEvent}">
+                <h:commandLink value="výsledek" action="#{createElectionEvent.viewResultEvent}">
                     <f:param name="eventId" value="#{item.id}"/>
                 </h:commandLink>
             </h:form>
