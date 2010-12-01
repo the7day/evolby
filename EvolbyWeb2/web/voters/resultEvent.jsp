@@ -32,7 +32,7 @@
     </div>
     <h:messages styleClass="message" />
     
-    <h:dataTable styleClass="elections" cellspacing="1" value="#{generatingResults.electionEventResults}" var="item">
+    <h:dataTable styleClass="elections" cellspacing="1" value="#{generatingResults.eeResultModel}" var="item">
         <h:column>
             <f:facet name="header">
                 <h:outputText value="Kandidát"/>
@@ -49,12 +49,10 @@
             <f:facet name="header">
                 <h:outputText value="Výsledek" />
             </f:facet>
-            <h:outputText value="#{item.elected}"/>   
-
-            
+            <h:outputText value="#{generatingResults.votingResultLabel}"/>
         </h:column>
     </h:dataTable>
-        <h:outputText value="1 - Zvolen,2 - Není místo, 3 - Nesplnil podmínky"/>
+
 </f:view>
 
 
