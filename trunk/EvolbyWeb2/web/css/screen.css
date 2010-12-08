@@ -83,6 +83,28 @@ ul.buttons li a, a.button, input.button {
     cursor: url;
 }
 
+ul.buttons li span{
+    display: block;
+    background-image: url("img/button.png");
+    background-position: left top;
+    background-repeat: no-repeat;
+    width: 160px;
+    position: relative;
+    color : darkgrey;
+    padding: 8px 0 8px 10px;
+    text-align:left;
+    font-size:11px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight:bold;
+    margin: 0;
+    border:none;
+    cursor: url;
+    float: left;
+}
+
+
+
 ul.buttons li a:hover, a.button:hover, input.button_hover {
     background-image: url("img/button_hover.png");
     color: white;
