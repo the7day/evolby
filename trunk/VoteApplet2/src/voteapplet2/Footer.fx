@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Alert;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
+import javafx.stage.AppletStageExtension;
 
 /**
  * Nadefinovani paticky appletu.
@@ -57,8 +58,10 @@ public var footer = HBox {
                                     onMouseClicked: function(e: MouseEvent) {
                                         if (Main.communication.sendVoteCard()) {
                                             Alert.inform("Hlas byl odeslan.");
+                                            AppletStageExtension.showDocument("https://localhost:8181/EvolbyWeb2/voters/voting.jsf");
                                         } else {
                                             Alert.inform("Ups, neco je spatne.");
+                                            AppletStageExtension.showDocument("https://localhost:8181/EvolbyWeb2/voters/voting.jsf");
                                         }
 
                                     }
@@ -98,6 +101,7 @@ public var footer = HBox {
                                 radius: 4,
                             }
                             onMouseClicked: function(e: MouseEvent) {
+                                AppletStageExtension.showDocument("https://localhost:8181/EvolbyWeb2/voters/voting.jsf");
                                 FX.exit();
                             }
                         }, // rectangle
