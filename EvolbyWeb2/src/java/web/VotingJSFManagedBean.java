@@ -183,4 +183,9 @@ public class VotingJSFManagedBean {
 
         return (List<Voter>) votingSessionBean.getAllVoters();
     }
+
+    public boolean getRenderVolit(){
+        List si = getSelectItems();
+        return si.isEmpty();
+    }
 }

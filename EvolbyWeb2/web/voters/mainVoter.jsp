@@ -5,12 +5,12 @@
     <div class="menu">
         <ul class="buttons">
             <li>
-                <h:outputLink value="nominating.jsf">
+                <h:outputLink value="nominating.jsf" disabled="#{nominating.renderNominovat}">
                     Nominovat
                 </h:outputLink>
             </li>
             <li>
-                <h:outputLink  value="voting.jsf">
+                <h:outputLink  value="voting.jsf"  disabled="#{voting.renderVolit}">
                     Hlasovat
                 </h:outputLink>
             </li>

@@ -54,13 +54,13 @@ public class NominatingJSFManagedBean {
         String login = tellerSessionBean.getLoginLoggedUser();
         try {
             nominatingSessionBean.nominate(login, getEventId(), programme);
-            FacesMessage m = new FacesMessage("You were successfully nominated");
+            FacesMessage m = new FacesMessage("Byl jste úspěšně nominován");
             FacesContext.getCurrentInstance().addMessage("", m);
         } catch (ControllerException ex) {
             Logger.getLogger(NominatingJSFManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
-        return "goNominate";
+        return "goMain";
     }
 
     public String startNominating() {
@@ -128,5 +128,10 @@ public class NominatingJSFManagedBean {
 
     public void setProgramme(String programme) {
         this.programme = programme;
+    }
+
+    public boolean getRenderNominovat(){
+        List si = getSelectItems();
+        return si.isEmpty();
     }
 }
