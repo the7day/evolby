@@ -24,25 +24,27 @@
             </li>
             <li>
                 <h:form>
-                    <h:commandLink value="OdhlÃ¡sit" action="#{default.logout}"/>
+                    <h:commandLink value="Odhlásit" action="#{default.logout}"/>
                 </h:form>
             </li>
         </ul>
-        <h1>VolenÃ­</h1>
+        <h1>Volení­</h1>
     </div>
     <f:verbatim>
         <jsp:plugin type="applet"
-                    archive="VoteApplet.jar"
-                    code="voteapplet.Main"
-                    codebase=""
-                    width="250"
-                    height="350"
-                    jreversion="1.5"
-                    >
+        archive="VoteApplet2.jar"
+        code="voteapplet2.Main"
+        codebase=""
+        width="250"
+        height="350"
+        jreversion="1.5"
+        >
             <jsp:params>
-                <jsp:param name="jnlp_href" value="VoteApplet_browser.jnlp" />
-                <jsp:param name='token' value='${voting.token}' />
-                <jsp:param name='eventId' value='${voting.eventId}' />
+                    <jsp:param name="jnlp_href" value="VoteApplet2_browser.jnlp" />
+                    <jsp:param name='voter' value='${voting.token}' />
+                    <jsp:param name='event' value='${voting.eventId}' />
+                    <jsp:param name='host' value='127.0.0.1' />
+                    <jsp:param name='port' value='3700' />
             </jsp:params>
             <jsp:fallback>
                 <B>Unable to start plugin!</B>
