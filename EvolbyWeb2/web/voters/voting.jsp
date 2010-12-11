@@ -30,27 +30,27 @@
         <h1>Volení</h1>
     </div>
     <h:messages styleClass="message" />
+    <h:form>
+        <table class="form" cellspacing="1">
+            <tbody>
+                <tr>
+                    <th>Volební událost:</th>
+                    <td>
+                        <h:selectOneMenu value="#{voting.eventId}">
+                            <f:selectItems value="#{voting.selectItems}" />
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="button">
 
-    <table class="form" cellspacing="1">
-        <tbody>
-            <tr>
-                <th>Volební událost:</th>
-                <td>
-                    <h:selectOneMenu value="#{voting.eventId}">
-                        <f:selectItems value="#{voting.selectItems}" />
-                    </h:selectOneMenu>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" class="button">
-                    <h:form>
                         <h:commandButton value="Volit" action="#{voting.goVote}" />
-                    </h:form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </h:form>
 </f:view>
 
 <jsp:include page="../footer.jsp" />
