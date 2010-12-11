@@ -62,6 +62,7 @@ public class VotingJSFManagedBean {
 
     public String goVote() {
         setEventId(eventId);
+        System.out.println("nastavuj EventId na "+getEventId());
         return "goVote";
     }
 
