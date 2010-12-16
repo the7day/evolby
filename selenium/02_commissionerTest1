@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="https://localhost:8188/" />
+<title>02_commissioner</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">02_commissioner</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/EvolbyWeb2/login.jsf</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_username</td>
+	<td>commissioner1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_password</td>
+	<td>commissioner1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='login']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Click here to continue, commissioner</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=View election</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tbody/tr[last()]/td/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create new event</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//input[@type='text']</td>
+	<td>SeleniumTestEvent</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//textarea</td>
+	<td>This is a test event for selenium</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@type=&quot;submit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tbody/tr[last()]/td/form/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add voter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//select</td>
+	<td>label=regexp:voter1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Go back</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Remove</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add voter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//select</td>
+	<td>label=regexp:voter2</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Go back</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Start nominating</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=View election</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=logout</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
